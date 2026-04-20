@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   ScrollView, KeyboardAvoidingView, Platform,
-  StatusBar, Dimensions,
+  StatusBar, Dimensions, Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -30,20 +30,24 @@ export default function RegisterScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Imagen superior pequeña — reemplazar con require('../assets/top-promo.png') */}
         <View style={styles.topImgWrap}>
-          <View style={styles.topImgPlaceholder} />
+          <Image
+            source={require('../assets/licoreria-2.png')}
+            style={styles.topImg}
+            resizeMode="cover"
+          />
         </View>
 
-        {/* Texto central */}
         <Text style={styles.tagline}>
           Regístrate para ver <Text style={styles.taglineBold}>nuestras ofertas</Text>
         </Text>
 
-        {/* Imagen principal — reemplazar con require('../assets/main-promo.png') */}
-        <View style={styles.mainImgPlaceholder} />
+        <Image
+          source={require('../assets/licoreria-3.png')}
+          style={styles.mainImg}
+          resizeMode="cover"
+        />
 
-        {/* Formulario */}
         <View style={styles.form}>
           <TextInput
             style={styles.input}
@@ -88,51 +92,45 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
 
-  /* Imagen pequeña superior */
   topImgWrap: {
-    width: 130,
-    height: 160,
+    width: 160,
+    height: 220,
     borderRadius: 16,
     overflow: 'hidden',
     marginBottom: 20,
   },
-  topImgPlaceholder: { width: '100%', height: '100%', backgroundColor: '#222' },
+  topImg: { width: '100%', height: '100%' },
 
-  /* Tagline */
   tagline: {
-    fontSize: 15,
+    fontSize: 19,
     color: '#ffffff',
     textAlign: 'center',
     marginBottom: 20,
-    paddingHorizontal: 30,
-    lineHeight: 22,
+    paddingHorizontal: 24,
+    lineHeight: 26,
   },
   taglineBold: { fontWeight: '700', color: '#ffffff' },
 
-  mainImgPlaceholder: {
+  mainImg: {
     width: width,
     height: 220,
-    backgroundColor: '#1a1a1a',
     marginBottom: 28,
   },
 
-  /* Formulario */
   form: { width: '100%', paddingHorizontal: 24, gap: 12 },
   input: {
-    backgroundColor: '#111111',
-    borderWidth: 1,
-    borderColor: '#2a2a2a',
-    borderRadius: 6,
+    backgroundColor: '#ffffff',
+    borderRadius: 2,
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 18,
     fontSize: 13,
-    color: '#ffffff',
+    color: '#000000',
     letterSpacing: 1.5,
   },
   btn: {
     backgroundColor: '#7a7820',
-    borderRadius: 6,
-    paddingVertical: 17,
+    borderRadius: 2,
+    paddingVertical: 18,
     alignItems: 'center',
     marginTop: 4,
   },
