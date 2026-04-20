@@ -1,0 +1,286 @@
+import React, { useEffect, useState } from 'react';
+import {
+  View, Text, StyleSheet, FlatList, Image, TouchableOpacity,
+  TextInput, Modal, Alert, ActivityIndicator, Platform, StatusBar,
+} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { getPromotions, createPromotion, deletePromotion } from '../../src/services/api';
+
+const C = {
+  bg: '#f5f5f5',
+  white: '#ffffff',
+  text: '#111111',
+  sub: '#666666',
+  muted: '#999999',
+  card: '#f0f0f0',
+  border: '#ebebeb',
+  accent: '#111111',
+  error: '#c40000',
+  overlay: 'rgba(0,0,0,0.5)',
+};
+
+export default function AdminPromotions() {
+  const [promotions, setPromotions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+
+  const load = async () => {
+    try {
+      const res = await getPromotions();
+      setPromotions(res.data);
+    } catch {}
+    finally { setLoading(false); }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.85,
+    });
+    if (!result.canceled) setImage(result.assets[0]);
+  };
+
+  const handleCreate = async () => {
+    if (!title.trim()) { Alert.alert('Error', 'Ingresa el título'); return; }
+    setSaving(true);
+    try {
+      const form = new FormData();
+      form.append('title', title.trim());
+      form.append('description', description.trim());
+      if (image) {
+        form.append('image', { uri: image.uri, type: 'image/jpeg', name: 'promo.jpg' } as any);
+      }
+      await createPromotion(form);
+      setModalVisible(false);
+      setTitle(''); setDescription(''); setImage(null);
+      load();
+    } catch {
+      Alert.alert('Error', 'No se pudo crear la promoción');
+    } finally { setSaving(false); }
+  };
+
+  const handleDelete = (id: string, promoTitle: string) => {
+    Alert.alert('Eliminar', `¿Eliminar "${promoTitle}"?`, [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Eliminar', style: 'destructive',
+        onPress: async () => {
+          try { await deletePromotion(id); load(); }
+          catch { Alert.alert('Error', 'No se pudo eliminar'); }
+        },
+      },
+    ]);
+  };
+
+  if (loading) {
+    return <View style={styles.center}><ActivityIndicator size="large" color={C.text} /></View>;
+  }
+
+  return (
+    <View style={styles.root}>
+      <StatusBar barStyle="dark-content" backgroundColor={C.white} />
+
+      <View style={styles.pageHeader}>
+        <Text style={styles.pageTitle}>Promociones</Text>
+        <Text style={styles.pageSub}>{promotions.length} activas</Text>
+      </View>
+
+      <FlatList
+        data={promotions}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.list}
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <Text style={{ fontSize: 52 }}>🏷️</Text>
+            <Text style={styles.emptyTitle}>Sin promociones</Text>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <View style={styles.cardImg}>
+              {item.image ? (
+                <Image source={{ uri: item.image }} style={styles.cardImgFile} resizeMode="cover" />
+              ) : (
+                <View style={styles.cardImgFallback}>
+                  <Text style={{ fontSize: 28 }}>🏷️</Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.cardInfo}>
+              <Text style={styles.cardTitle} numberOfLines={1}>{item.title}</Text>
+              {item.description ? (
+                <Text style={styles.cardDesc} numberOfLines={2}>{item.description}</Text>
+              ) : null}
+            </View>
+            <TouchableOpacity
+              style={styles.deleteBtn}
+              onPress={() => handleDelete(item._id, item.title)}
+            >
+              <Text style={styles.deleteBtnText}>✕</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+
+      <TouchableOpacity style={styles.fab} onPress={() => setModalVisible(true)} activeOpacity={0.85}>
+        <Text style={styles.fabText}>+ Nueva promoción</Text>
+      </TouchableOpacity>
+
+      <Modal visible={modalVisible} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.sheet}>
+            <View style={styles.sheetHandle} />
+            <Text style={styles.sheetTitle}>Nueva promoción</Text>
+
+            <Text style={styles.inputLabel}>Título *</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Ej: 2x1 en cervezas"
+              placeholderTextColor={C.muted}
+              value={title}
+              onChangeText={setTitle}
+            />
+
+            <Text style={styles.inputLabel}>Descripción (opcional)</Text>
+            <TextInput
+              style={[styles.input, styles.inputMulti]}
+              placeholder="Detalles de la promoción..."
+              placeholderTextColor={C.muted}
+              value={description}
+              onChangeText={setDescription}
+              multiline
+              numberOfLines={3}
+              textAlignVertical="top"
+            />
+
+            <Text style={styles.inputLabel}>Imagen (opcional)</Text>
+            <TouchableOpacity style={styles.imgPicker} onPress={pickImage} activeOpacity={0.8}>
+              {image ? (
+                <Image source={{ uri: image.uri }} style={styles.imgPreview} resizeMode="cover" />
+              ) : (
+                <View style={styles.imgPickerInner}>
+                  <Text style={{ fontSize: 28 }}>📷</Text>
+                  <Text style={styles.imgPickerText}>Toca para seleccionar</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+
+            <View style={styles.sheetBtns}>
+              <TouchableOpacity
+                style={styles.cancelBtn}
+                onPress={() => { setModalVisible(false); setTitle(''); setDescription(''); setImage(null); }}
+              >
+                <Text style={styles.cancelText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.saveBtn, saving && { opacity: 0.6 }]}
+                onPress={handleCreate}
+                disabled={saving}
+              >
+                {saving ? <ActivityIndicator color="#fff" /> : <Text style={styles.saveText}>Guardar</Text>}
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: C.bg },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: C.bg },
+
+  pageHeader: {
+    backgroundColor: C.white,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'android' ? 46 : 54,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: C.border,
+  },
+  pageTitle: { fontSize: 26, fontWeight: '800', color: C.text, letterSpacing: -0.5 },
+  pageSub: { fontSize: 13, color: C.sub, marginTop: 2, fontWeight: '500' },
+
+  list: { padding: 20, gap: 12, paddingBottom: 100 },
+
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: C.white,
+    borderRadius: 18,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: C.border,
+    gap: 0,
+  },
+  cardImg: { width: 90, height: 90 },
+  cardImgFile: { width: '100%', height: '100%' },
+  cardImgFallback: {
+    width: '100%', height: '100%',
+    backgroundColor: C.card, justifyContent: 'center', alignItems: 'center',
+  },
+  cardInfo: { flex: 1, padding: 14 },
+  cardTitle: { fontSize: 15, fontWeight: '700', color: C.text },
+  cardDesc: { fontSize: 12, color: C.sub, marginTop: 4, lineHeight: 17 },
+  deleteBtn: {
+    width: 34, height: 34, borderRadius: 17,
+    backgroundColor: '#ffeaea', justifyContent: 'center', alignItems: 'center',
+    marginRight: 14,
+  },
+  deleteBtnText: { fontSize: 13, color: C.error, fontWeight: '700' },
+
+  fab: {
+    position: 'absolute', bottom: 28, right: 20, left: 20,
+    backgroundColor: C.accent, borderRadius: 16, paddingVertical: 17,
+    alignItems: 'center', elevation: 6,
+    shadowColor: '#000', shadowOpacity: 0.18, shadowOffset: { width: 0, height: 4 }, shadowRadius: 10,
+  },
+  fabText: { color: '#fff', fontWeight: '800', fontSize: 16 },
+
+  modalOverlay: { flex: 1, backgroundColor: C.overlay, justifyContent: 'flex-end' },
+  sheet: {
+    backgroundColor: C.white,
+    borderTopLeftRadius: 28, borderTopRightRadius: 28,
+    padding: 24, paddingBottom: Platform.OS === 'ios' ? 40 : 28,
+  },
+  sheetHandle: {
+    width: 40, height: 4, backgroundColor: C.border,
+    borderRadius: 2, alignSelf: 'center', marginBottom: 20,
+  },
+  sheetTitle: { fontSize: 20, fontWeight: '800', color: C.text, marginBottom: 20, letterSpacing: -0.3 },
+  inputLabel: { fontSize: 13, fontWeight: '700', color: C.text, marginBottom: 6 },
+  input: {
+    backgroundColor: C.card, borderRadius: 14,
+    paddingHorizontal: 16, paddingVertical: 14,
+    fontSize: 15, color: C.text, marginBottom: 16,
+  },
+  inputMulti: { height: 88, textAlignVertical: 'top' },
+  imgPicker: {
+    backgroundColor: C.card, borderRadius: 14,
+    height: 130, overflow: 'hidden', marginBottom: 24,
+  },
+  imgPickerInner: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 6 },
+  imgPickerText: { fontSize: 13, color: C.sub, fontWeight: '600' },
+  imgPreview: { width: '100%', height: '100%' },
+  sheetBtns: { flexDirection: 'row', gap: 10 },
+  cancelBtn: {
+    flex: 1, backgroundColor: C.card, borderRadius: 14,
+    paddingVertical: 16, alignItems: 'center',
+  },
+  cancelText: { fontSize: 15, fontWeight: '700', color: C.sub },
+  saveBtn: {
+    flex: 1, backgroundColor: C.accent, borderRadius: 14,
+    paddingVertical: 16, alignItems: 'center',
+  },
+  saveText: { fontSize: 15, fontWeight: '800', color: '#fff' },
+
+  empty: { alignItems: 'center', paddingTop: 80 },
+  emptyTitle: { fontSize: 18, fontWeight: '700', color: C.sub, marginTop: 12 },
+});
