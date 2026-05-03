@@ -1,0 +1,23 @@
+{
+  "category": "Cognac",
+  "products": [
+    {
+      "name": "Baileys",
+      "capacity": "700 ml",
+      "cols": 1,
+      "file": "01.png"
+    },
+    {
+      "name": "Calahua Crema de Coco Lata",
+      "capacity": "",
+      "cols": 2,
+      "file": "02.png"
+    },
+    {
+      "name": "Caña de Oro Licor de Caña",
+      "capacity": "",
+      "cols": 2,
+      "file": "03.png"
+    }
+  ]
+}

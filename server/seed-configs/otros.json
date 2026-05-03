@@ -1,0 +1,294 @@
+{
+  "category": "OTROS",
+  "footerFile": "49.png",
+  "products": [
+    {
+      "name": "Maria's Gamesa",
+      "capacity": "",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Galletas Ritz",
+      "capacity": "",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Emperador Chocolate",
+      "capacity": "",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Galletas TRiki trakes",
+      "capacity": "",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Principe Chocolate",
+      "capacity": "",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Galletas Canelitas",
+      "capacity": "",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "Galletas Sponch",
+      "capacity": "",
+      "cols": 3,
+      "file": "07.png"
+    },
+    {
+      "name": "Barritas Piña",
+      "capacity": "",
+      "cols": 3,
+      "file": "08.png"
+    },
+    {
+      "name": "Barritas Fresa",
+      "capacity": "",
+      "cols": 3,
+      "file": "09.png"
+    },
+    {
+      "name": "Galletas Saladitas",
+      "capacity": "",
+      "cols": 3,
+      "file": "10.png"
+    },
+    {
+      "name": "Atun Dorado",
+      "capacity": "",
+      "cols": 3,
+      "file": "11.png"
+    },
+    {
+      "name": "Mayonesa McCormick",
+      "capacity": "",
+      "cols": 3,
+      "file": "12.png"
+    },
+    {
+      "name": "Maruchan Pollo",
+      "capacity": "",
+      "cols": 3,
+      "file": "13.png"
+    },
+    {
+      "name": "Maruchan Camaron",
+      "capacity": "",
+      "cols": 3,
+      "file": "14.png"
+    },
+    {
+      "name": "Maruchan Limon Habanero",
+      "capacity": "",
+      "cols": 3,
+      "file": "15.png"
+    },
+    {
+      "name": "Cafe Legal",
+      "capacity": "",
+      "cols": 3,
+      "file": "16.png"
+    },
+    {
+      "name": "Salsa Botanera",
+      "capacity": "",
+      "cols": 3,
+      "file": "17.png"
+    },
+    {
+      "name": "Salsa Valentina",
+      "capacity": "",
+      "cols": 3,
+      "file": "18.png"
+    },
+    {
+      "name": "Ensalada de Verduras del Monte",
+      "capacity": "",
+      "cols": 3,
+      "file": "19.png"
+    },
+    {
+      "name": "Ensalada de Verdura La Costeña",
+      "capacity": "",
+      "cols": 3,
+      "file": "20.png"
+    },
+    {
+      "name": "Chiles Chipotle",
+      "capacity": "",
+      "cols": 3,
+      "file": "21.png"
+    },
+    {
+      "name": "Aceite de Cocina Capullo",
+      "capacity": "",
+      "cols": 3,
+      "file": "22.png"
+    },
+    {
+      "name": "Caldo de Pollo Cubo",
+      "capacity": "",
+      "cols": 3,
+      "file": "23.png"
+    },
+    {
+      "name": "Caldo de Pollo Polvo",
+      "capacity": "",
+      "cols": 3,
+      "file": "24.png"
+    },
+    {
+      "name": "Nutri Leche Deslactosada",
+      "capacity": "",
+      "cols": 3,
+      "file": "25.png"
+    },
+    {
+      "name": "Nutri Leche Clasica",
+      "capacity": "",
+      "cols": 3,
+      "file": "26.png"
+    },
+    {
+      "name": "Leche Nesquick Chocolate",
+      "capacity": "",
+      "cols": 3,
+      "file": "27.png"
+    },
+    {
+      "name": "Leche Hersheys Chocolate",
+      "capacity": "",
+      "cols": 3,
+      "file": "28.png"
+    },
+    {
+      "name": "Leche Alpura Fresa",
+      "capacity": "",
+      "cols": 3,
+      "file": "29.png"
+    },
+    {
+      "name": "Leche Alpura Chocolate",
+      "capacity": "",
+      "cols": 3,
+      "file": "30.png"
+    },
+    {
+      "name": "Jugo del Valle Durazno",
+      "capacity": "",
+      "cols": 3,
+      "file": "31.png"
+    },
+    {
+      "name": "Jugo del Valle Mango",
+      "capacity": "",
+      "cols": 3,
+      "file": "32.png"
+    },
+    {
+      "name": "Boing Mango mini botella",
+      "capacity": "354 ml",
+      "cols": 3,
+      "file": "33.png"
+    },
+    {
+      "name": "Boing Fresa",
+      "capacity": "1 L",
+      "cols": 4,
+      "file": "34.png"
+    },
+    {
+      "name": "Boing Mango",
+      "capacity": "1 L",
+      "cols": 4,
+      "file": "35.png"
+    },
+    {
+      "name": "Boin botella mango",
+      "capacity": "237 ml",
+      "cols": 4,
+      "file": "36.png"
+    },
+    {
+      "name": "Boing Lata",
+      "capacity": "340 ml",
+      "cols": 4,
+      "file": "37.png"
+    },
+    {
+      "name": "Boing manzana",
+      "capacity": "500 ml",
+      "cols": 3,
+      "file": "38.png"
+    },
+    {
+      "name": "Boing mango",
+      "capacity": "500 ml",
+      "cols": 3,
+      "file": "39.png"
+    },
+    {
+      "name": "Boing mango",
+      "capacity": "1 L",
+      "cols": 3,
+      "file": "40.png"
+    },
+    {
+      "name": "Boing manzana",
+      "capacity": "1 L",
+      "cols": 3,
+      "file": "41.png"
+    },
+    {
+      "name": "Jumex Mango",
+      "capacity": "1 L",
+      "cols": 3,
+      "file": "42.png"
+    },
+    {
+      "name": "Jumex Piña",
+      "capacity": "1 L",
+      "cols": 3,
+      "file": "43.png"
+    },
+    {
+      "name": "Sal Oso Blanco",
+      "capacity": "",
+      "cols": 3,
+      "file": "44.png"
+    },
+    {
+      "name": "Vinagre de Manzana",
+      "capacity": "",
+      "cols": 3,
+      "file": "45.png"
+    },
+    {
+      "name": "Vinagre Blanco",
+      "capacity": "",
+      "cols": 3,
+      "file": "46.png"
+    },
+    {
+      "name": "Frijoles Bayos Refritos Lata",
+      "capacity": "",
+      "cols": 2,
+      "file": "47.png"
+    },
+    {
+      "name": "Frijoles Bayos Refritos Bolsa",
+      "capacity": "",
+      "cols": 2,
+      "file": "48.png"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "category": "vodka",
+  "products": [
+    {
+      "name": "Vodka Smirnoff Regular",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Vodka SKYY Rasberry",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Vodka Mora Azul Kosako",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Vodka Smirnoff Spicy Tamarindo",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Vodka Oso Negro",
+      "capacity": "1 L",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Vodka Absolut Raspberry",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "Vodka Absolut Pera",
+      "capacity": "700 ml",
+      "cols": 2,
+      "file": "07.png"
+    },
+    {
+      "name": "Vodka Absolut Mango",
+      "capacity": "700 ml",
+      "cols": 2,
+      "file": "08.png"
+    },
+    {
+      "name": "Vodka Absolut Mandarin",
+      "capacity": "700 ml",
+      "cols": 2,
+      "file": "09.png"
+    },
+    {
+      "name": "Vodka Absolut Azul",
+      "capacity": "700 ml",
+      "cols": 2,
+      "file": "10.png"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "category": "whiskey",
+  "products": [
+    {
+      "name": "Buchanan's Deluxe 12 años",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Chivas Regal 12 años",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Jack Daniel's",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Whiskey Etiqueta Roja",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Whiskey Etiqueta Negra",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Whiskey J/B",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "William Lawson's",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "07.png"
+    }
+  ]
+}

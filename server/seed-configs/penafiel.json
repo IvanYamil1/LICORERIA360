@@ -1,0 +1,101 @@
+{
+  "category": "Peñafiel",
+  "products": [
+    {
+      "name": "Adas 600ml",
+      "capacity": "Sabores: Toronja, Manzana, Piña, Naranja, Limon, Fresa, Mango",
+      "cols": 1,
+      "file": "01.png"
+    },
+    {
+      "name": "Peñafiel Mandarina",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Peñafiel Limon",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Peñafiel Piña",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Peñafiel Naranja",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Peñafiel Fresa",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "Peñafiel Naranjada",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "07.png"
+    },
+    {
+      "name": "Peñafiel Limonada",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "08.png"
+    },
+    {
+      "name": "Peñafiel Manzana",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "09.png"
+    },
+    {
+      "name": "Peñafiel Piñada",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "10.png"
+    },
+    {
+      "name": "Twist Limon",
+      "capacity": "2 L y 600 ml",
+      "cols": 3,
+      "file": "11.png"
+    },
+    {
+      "name": "Peñafiel Fresa",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "12.png"
+    },
+    {
+      "name": "Peñafiel Arandanos",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "13.png"
+    },
+    {
+      "name": "Peñafiel Mandarina",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "14.png"
+    },
+    {
+      "name": "Peñafiel Sangria",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "15.png"
+    },
+    {
+      "name": "Peñafiel Toronja",
+      "capacity": "2 L",
+      "cols": 3,
+      "file": "16.png"
+    }
+  ]
+}

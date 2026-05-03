@@ -1,0 +1,89 @@
+{
+  "category": "Ron",
+  "products": [
+    {
+      "name": "Ron Presidente Clasico",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Ron Bacardi Blanco",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Ron Bacardi Añejo",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Ron Bacardi Coco",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Ron Bacardi Limon",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Ron Bacardi Mango Chile",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "Ron Bacardi Rasberry",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "07.png"
+    },
+    {
+      "name": "Ron Appleton Estate",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "08.png"
+    },
+    {
+      "name": "Ron Malibu",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "09.png"
+    },
+    {
+      "name": "Ron Bacardi Solera",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "10.png"
+    },
+    {
+      "name": "Rompope Holandesa",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "11.png"
+    },
+    {
+      "name": "Rompope Coronado Piñon",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "12.png"
+    },
+    {
+      "name": "Rompope Coronado Vainilla",
+      "capacity": "",
+      "cols": 2,
+      "file": "13.png"
+    },
+    {
+      "name": "Rompope Santa Clara",
+      "capacity": "",
+      "cols": 2,
+      "file": "14.png"
+    }
+  ]
+}

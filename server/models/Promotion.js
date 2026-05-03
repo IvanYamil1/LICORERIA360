@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const promotionSchema = new mongoose.Schema({
   type: {
     type: String,
-    enum: ['normal', 'featured', 'hero', 'footer'],
+    enum: ['normal', 'featured', 'hero', 'footer', 'offer-badge', 'categories-banner'],
     default: 'normal',
   },
   title:       { type: String },

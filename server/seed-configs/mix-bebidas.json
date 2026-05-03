@@ -1,0 +1,203 @@
+{
+  "category": "MIX bebida",
+  "products": [
+    {
+      "name": "Predator Manzana Roja",
+      "capacity": "",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Predator Gold Strike",
+      "capacity": "",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Predator Verde",
+      "capacity": "",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Volt Yellow",
+      "capacity": "",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Volt Blue",
+      "capacity": "",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Monster",
+      "capacity": "",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "Amper Mango",
+      "capacity": "",
+      "cols": 3,
+      "file": "07.png"
+    },
+    {
+      "name": "Volt Gamer",
+      "capacity": "",
+      "cols": 3,
+      "file": "08.png"
+    },
+    {
+      "name": "Volt Dark",
+      "capacity": "",
+      "cols": 3,
+      "file": "09.png"
+    },
+    {
+      "name": "Red Bull",
+      "capacity": "",
+      "cols": 3,
+      "file": "10.png"
+    },
+    {
+      "name": "Amper Beat",
+      "capacity": "",
+      "cols": 3,
+      "file": "11.png"
+    },
+    {
+      "name": "Amper",
+      "capacity": "",
+      "cols": 3,
+      "file": "12.png"
+    },
+    {
+      "name": "Predator Tropical Storm",
+      "capacity": "",
+      "cols": 2,
+      "file": "13.png"
+    },
+    {
+      "name": "Vive 100",
+      "capacity": "",
+      "cols": 2,
+      "file": "14.png"
+    },
+    {
+      "name": "New Mix Paloma",
+      "capacity": "",
+      "cols": 3,
+      "file": "15.png"
+    },
+    {
+      "name": "New Mix Vampiro",
+      "capacity": "",
+      "cols": 3,
+      "file": "16.png"
+    },
+    {
+      "name": "New Mix Tamarindo",
+      "capacity": "",
+      "cols": 3,
+      "file": "17.png"
+    },
+    {
+      "name": "Caribe Cooler sabor Tinto",
+      "capacity": "",
+      "cols": 3,
+      "file": "18.png"
+    },
+    {
+      "name": "Caribe Cooler sabor Durazno",
+      "capacity": "",
+      "cols": 3,
+      "file": "19.png"
+    },
+    {
+      "name": "Caribe Cooler sabor Fresa",
+      "capacity": "",
+      "cols": 3,
+      "file": "20.png"
+    },
+    {
+      "name": "Viña Real Mora Azul",
+      "capacity": "",
+      "cols": 3,
+      "file": "21.png"
+    },
+    {
+      "name": "Viña Real Fresa",
+      "capacity": "",
+      "cols": 3,
+      "file": "22.png"
+    },
+    {
+      "name": "Viña Real Durazno",
+      "capacity": "",
+      "cols": 3,
+      "file": "23.png"
+    },
+    {
+      "name": "Gatorade sabor Mora",
+      "capacity": "750 ml",
+      "cols": 2,
+      "file": "24.png"
+    },
+    {
+      "name": "Gatorade sabor Frutas",
+      "capacity": "750 ml",
+      "cols": 2,
+      "file": "25.png"
+    },
+    {
+      "name": "Electrolit sabor Uva",
+      "capacity": "625 ml",
+      "cols": 3,
+      "file": "26.png"
+    },
+    {
+      "name": "Electrolit sabor Ponche",
+      "capacity": "625 ml",
+      "cols": 3,
+      "file": "27.png"
+    },
+    {
+      "name": "Suerox Uva",
+      "capacity": "630 ml",
+      "cols": 3,
+      "file": "28.png"
+    },
+    {
+      "name": "Suerox Frutos Rojos",
+      "capacity": "630 ml",
+      "cols": 3,
+      "file": "29.png"
+    },
+    {
+      "name": "Suerox Mora Azul",
+      "capacity": "630 ml",
+      "cols": 3,
+      "file": "30.png"
+    },
+    {
+      "name": "Suerox Fresa Kiwi",
+      "capacity": "630 ml",
+      "cols": 3,
+      "file": "31.png"
+    },
+    {
+      "name": "Kool Mora Azul",
+      "capacity": "",
+      "cols": 2,
+      "file": "32.png"
+    },
+    {
+      "name": "Kool Durazno",
+      "capacity": "",
+      "cols": 2,
+      "file": "33.png"
+    }
+  ]
+}

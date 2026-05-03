@@ -1,0 +1,28 @@
+{
+  "category": "Jarritos",
+  "footerFile": "22.png",
+  "products": [
+    { "name": "Jarrito sabor Tutifruti",  "capacity": "600 ml", "cols": 3, "file": "01.png" },
+    { "name": "Jarrito sabor Piña",       "capacity": "600 ml", "cols": 3, "file": "02.png" },
+    { "name": "Jarrito sabor Tamarindo",  "capacity": "600 ml", "cols": 3, "file": "03.png" },
+    { "name": "Jarrito sabor Limon",      "capacity": "600 ml", "cols": 3, "file": "04.png" },
+    { "name": "Jarrito sabor Manzana",    "capacity": "600 ml", "cols": 3, "file": "05.png" },
+    { "name": "Jarrito sabor Mandarina",  "capacity": "600 ml", "cols": 3, "file": "06.png" },
+    { "name": "Red Cola",                 "capacity": "2 L",    "cols": 3, "file": "07.png" },
+    { "name": "Skarch sabor Naranja",     "capacity": "1.5 L",  "cols": 3, "file": "08.png" },
+    { "name": "Skarch sabor Manzana",     "capacity": "1.5 L",  "cols": 3, "file": "09.png" },
+    { "name": "Red Cola",                 "capacity": "600 ml", "cols": 3, "file": "10.png" },
+    { "name": "Skarch sabor Aloe",        "capacity": "1.5 L",  "cols": 3, "file": "11.png" },
+    { "name": "Skarch sabor Jamaica",     "capacity": "1.5 L",  "cols": 3, "file": "12.png" },
+    { "name": "Jarrito sabor Tutifruti",  "capacity": "2 L",    "cols": 3, "file": "13.png" },
+    { "name": "Jarrito sabor Limon",      "capacity": "2 L",    "cols": 3, "file": "14.png" },
+    { "name": "Red Cola",                 "capacity": "3 L",    "cols": 3, "file": "15.png" },
+    { "name": "Jarrito sabor Mandarina",  "capacity": "2 L",    "cols": 3, "file": "16.png" },
+    { "name": "Jarrito sabor Piña",       "capacity": "2 L",    "cols": 3, "file": "17.png" },
+    { "name": "Jarrito sabor Manzana",    "capacity": "2 L",    "cols": 3, "file": "18.png" },
+    { "name": "Jarrito sabor Uva",        "capacity": "2 L",    "cols": 3, "file": "19.png" },
+    { "name": "Jarrito sabor Tamarindo",  "capacity": "2 L",    "cols": 3, "file": "20.png" },
+    { "name": "Jarrito sabor Limon",      "capacity": "2 L",    "cols": 3, "file": "23.png" },
+    { "name": "Jarritos de Lata Sabor",   "capacity": "Piña,Tamarindo,Mandarina, Tutifruti", "cols": 1, "file": "21.png" }
+  ]
+}

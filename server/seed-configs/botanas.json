@@ -1,0 +1,198 @@
+{
+  "category": "BOTANAS",
+  "footerFile": "33.png",
+  "products": [
+    {
+      "name": "Chips Sal",
+      "capacity": "55 g",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Chips Fuego",
+      "capacity": "55 g",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Chips Jalapeño",
+      "capacity": "55 g",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Cheetos Originales",
+      "capacity": "",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Fritos Limon y Sal",
+      "capacity": "",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Sabritas Papas Originales",
+      "capacity": "",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "SOL Papas Originales",
+      "capacity": "",
+      "cols": 4,
+      "file": "07.png"
+    },
+    {
+      "name": "SOL Nachos",
+      "capacity": "",
+      "cols": 4,
+      "file": "08.png"
+    },
+    {
+      "name": "Solchesitos",
+      "capacity": "",
+      "cols": 4,
+      "file": "09.png"
+    },
+    {
+      "name": "SOL Chipotle",
+      "capacity": "",
+      "cols": 4,
+      "file": "10.png"
+    },
+    {
+      "name": "SOL Habanero",
+      "capacity": "",
+      "cols": 4,
+      "file": "11.png"
+    },
+    {
+      "name": "SOL Nachos Jalapeño",
+      "capacity": "",
+      "cols": 4,
+      "file": "12.png"
+    },
+    {
+      "name": "SOL BBQ",
+      "capacity": "",
+      "cols": 4,
+      "file": "13.png"
+    },
+    {
+      "name": "SOL Adobada",
+      "capacity": "",
+      "cols": 4,
+      "file": "14.png"
+    },
+    {
+      "name": "SOL Papas Limon",
+      "capacity": "",
+      "cols": 4,
+      "file": "15.png"
+    },
+    {
+      "name": "SOL Papas Extrema",
+      "capacity": "",
+      "cols": 4,
+      "file": "16.png"
+    },
+    {
+      "name": "SOL Papas Rifaditas",
+      "capacity": "",
+      "cols": 4,
+      "file": "17.png"
+    },
+    {
+      "name": "SOL Papas Jalapeño",
+      "capacity": "",
+      "cols": 4,
+      "file": "18.png"
+    },
+    {
+      "name": "Cheetos Flamin Hot",
+      "capacity": "",
+      "cols": 3,
+      "file": "19.png"
+    },
+    {
+      "name": "Doritos Nachos",
+      "capacity": "",
+      "cols": 3,
+      "file": "20.png"
+    },
+    {
+      "name": "Palomitas Caramelo",
+      "capacity": "",
+      "cols": 3,
+      "file": "21.png"
+    },
+    {
+      "name": "Runners Fuego",
+      "capacity": "",
+      "cols": 3,
+      "file": "22.png"
+    },
+    {
+      "name": "Runners Chile Limon",
+      "capacity": "",
+      "cols": 3,
+      "file": "23.png"
+    },
+    {
+      "name": "Runners Limon y Sal",
+      "capacity": "",
+      "cols": 3,
+      "file": "24.png"
+    },
+    {
+      "name": "Takis Fuego",
+      "capacity": "",
+      "cols": 3,
+      "file": "25.png"
+    },
+    {
+      "name": "Takis Original",
+      "capacity": "",
+      "cols": 3,
+      "file": "26.png"
+    },
+    {
+      "name": "Tostitos",
+      "capacity": "",
+      "cols": 3,
+      "file": "27.png"
+    },
+    {
+      "name": "Manguitos Enchilados",
+      "capacity": "",
+      "cols": 4,
+      "file": "28.png"
+    },
+    {
+      "name": "Gomitas Enchiladas",
+      "capacity": "",
+      "cols": 4,
+      "file": "29.png"
+    },
+    {
+      "name": "Cacahuate Japones",
+      "capacity": "",
+      "cols": 4,
+      "file": "30.png"
+    },
+    {
+      "name": "Cacahuates Enchilados",
+      "capacity": "",
+      "cols": 4,
+      "file": "31.png"
+    },
+    {
+      "name": "SOL Nachos Extremo",
+      "capacity": "",
+      "cols": 1,
+      "file": "32.png"
+    }
+  ]
+}

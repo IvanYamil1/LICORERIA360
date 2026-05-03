@@ -1,0 +1,173 @@
+{
+  "category": "Tequila",
+  "products": [
+    {
+      "name": "Tequila Plata",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Tequila Don Ramon Cristalino",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Tequila Don Ramon Plata",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Tequila 100 Años",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Tequila Jimador Blanco",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Tequila Jimador Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "Tequila Maestro Dobel Blanco",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "07.png"
+    },
+    {
+      "name": "Tequila Maestro Dobel Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "08.png"
+    },
+    {
+      "name": "Tequila Maestro Dobel Diamante",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "09.png"
+    },
+    {
+      "name": "Tequila Hornitos Plata",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "10.png"
+    },
+    {
+      "name": "Tequila Hornitos Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "11.png"
+    },
+    {
+      "name": "Tequila Centenario Plata",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "12.png"
+    },
+    {
+      "name": "Tequila Cabrito Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "13.png"
+    },
+    {
+      "name": "Tequila Don Julio Blanco",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "14.png"
+    },
+    {
+      "name": "Tequila Jose Cuervo Especial Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "15.png"
+    },
+    {
+      "name": "Tequila Patron Silver",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "16.png"
+    },
+    {
+      "name": "Tequila 3 Generaciones Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "17.png"
+    },
+    {
+      "name": "Tequila Herradura Plata",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "18.png"
+    },
+    {
+      "name": "Tequila 1800 Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "19.png"
+    },
+    {
+      "name": "Tequila 1800 Cristalino",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "20.png"
+    },
+    {
+      "name": "Tequila 1800 Añejo",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "21.png"
+    },
+    {
+      "name": "Tequila Don Julio Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "22.png"
+    },
+    {
+      "name": "Tequila Cazadores Reposado",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "23.png"
+    },
+    {
+      "name": "Tequila 1800 Blanco",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "24.png"
+    },
+    {
+      "name": "Jose Cuervo Margarita Mix",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "25.png"
+    },
+    {
+      "name": "Sangrita Viuda de Sanchez",
+      "capacity": "",
+      "cols": 3,
+      "file": "26.png"
+    },
+    {
+      "name": "Margarita Clasica",
+      "capacity": "1 L",
+      "cols": 3,
+      "file": "27.png"
+    },
+    {
+      "name": "Centenario Licor Tequila Baby Mango",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "28.png"
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "category": "Limpieza",
+  "products": [
+    {
+      "name": "Suavitel Downy",
+      "capacity": "700 ml",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Suavitel Freca primavera",
+      "capacity": "740 ml",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Salvo",
+      "capacity": "500 ml",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Jabon Ariel",
+      "capacity": "",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Jabon Foca",
+      "capacity": "",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Jabon Roma",
+      "capacity": "",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "Papel Higienico Petalo",
+      "capacity": "",
+      "cols": 3,
+      "file": "07.png"
+    },
+    {
+      "name": "Servilletas Jumbo Petalo",
+      "capacity": "",
+      "cols": 3,
+      "file": "08.png"
+    },
+    {
+      "name": "Papel Higienico Hortensia",
+      "capacity": "",
+      "cols": 3,
+      "file": "09.png"
+    },
+    {
+      "name": "Cloralex Regular",
+      "capacity": "",
+      "cols": 3,
+      "file": "10.png"
+    },
+    {
+      "name": "Cloralex Gel",
+      "capacity": "",
+      "cols": 3,
+      "file": "11.png"
+    },
+    {
+      "name": "Pinol",
+      "capacity": "",
+      "cols": 3,
+      "file": "12.png"
+    },
+    {
+      "name": "Jabon Palmolive Barra",
+      "capacity": "",
+      "cols": 3,
+      "file": "13.png"
+    },
+    {
+      "name": "Jabon Carisma Barra",
+      "capacity": "",
+      "cols": 3,
+      "file": "14.png"
+    },
+    {
+      "name": "Jabon Zote Barra",
+      "capacity": "",
+      "cols": 3,
+      "file": "15.png"
+    },
+    {
+      "name": "Pasta Dental Colgate",
+      "capacity": "",
+      "cols": 3,
+      "file": "16.png"
+    },
+    {
+      "name": "Jabon Zote Blanco Barra",
+      "capacity": "",
+      "cols": 3,
+      "file": "17.png"
+    },
+    {
+      "name": "Jabon ROMA Barra",
+      "capacity": "",
+      "cols": 3,
+      "file": "18.png"
+    },
+    {
+      "name": "Papel Higienico Vogue",
+      "capacity": "",
+      "cols": 3,
+      "file": "19.png"
+    },
+    {
+      "name": "Platos desechables",
+      "capacity": "",
+      "cols": 3,
+      "file": "20.png"
+    },
+    {
+      "name": "Vasos plastico",
+      "capacity": "",
+      "cols": 3,
+      "file": "21.png"
+    },
+    {
+      "name": "Shampoo Savila Colageno",
+      "capacity": "",
+      "cols": 3,
+      "file": "22.png"
+    },
+    {
+      "name": "Shampoo Palmolive Optims",
+      "capacity": "",
+      "cols": 3,
+      "file": "23.png"
+    },
+    {
+      "name": "Shampoo Savila Keratina",
+      "capacity": "",
+      "cols": 3,
+      "file": "24.png"
+    },
+    {
+      "name": "Servilletas Vogue",
+      "capacity": "",
+      "cols": 3,
+      "file": "25.png"
+    },
+    {
+      "name": "Cepillos Dentales Colgate",
+      "capacity": "",
+      "cols": 2,
+      "file": "26.png"
+    }
+  ]
+}

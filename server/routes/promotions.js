@@ -3,7 +3,7 @@ const Promotion = require('../models/Promotion');
 const authMiddleware = require('../middleware/auth');
 const upload = require('../middleware/cloudinaryUpload');
 
-const VALID_TYPES = ['normal', 'featured', 'hero', 'footer'];
+const VALID_TYPES = ['normal', 'featured', 'hero', 'footer', 'offer-badge', 'categories-banner'];
 
 function sanitizeBody(body) {
   const out = {};
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-const SINGLETON_TYPES = ['hero', 'footer'];
+const SINGLETON_TYPES = ['hero', 'footer', 'offer-badge', 'categories-banner'];
 
 router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
   try {

@@ -1,0 +1,114 @@
+{
+  "category": "Coca Cola",
+  "footerFile": "19.png",
+  "products": [
+    {
+      "name": "Frutsi sabor Naranja",
+      "capacity": "",
+      "cols": 3,
+      "file": "01.png"
+    },
+    {
+      "name": "Frutsi sabor Ponche",
+      "capacity": "",
+      "cols": 3,
+      "file": "02.png"
+    },
+    {
+      "name": "Frutsi sabor Uva",
+      "capacity": "",
+      "cols": 3,
+      "file": "03.png"
+    },
+    {
+      "name": "Frutsi sabor Manzana",
+      "capacity": "",
+      "cols": 3,
+      "file": "04.png"
+    },
+    {
+      "name": "Frutsi sabor Mango",
+      "capacity": "",
+      "cols": 3,
+      "file": "05.png"
+    },
+    {
+      "name": "Agua Ciel",
+      "capacity": "",
+      "cols": 3,
+      "file": "06.png"
+    },
+    {
+      "name": "Coca Cola",
+      "capacity": "3 L",
+      "cols": 3,
+      "file": "07.png"
+    },
+    {
+      "name": "Coca Cola",
+      "capacity": "1.75 L",
+      "cols": 3,
+      "file": "08.png"
+    },
+    {
+      "name": "Coca Cola",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "09.png"
+    },
+    {
+      "name": "Coca Cola",
+      "capacity": "3 L",
+      "cols": 3,
+      "file": "10.png"
+    },
+    {
+      "name": "Coca Cola 1 1-4 Retornable",
+      "capacity": "",
+      "cols": 3,
+      "file": "11.png"
+    },
+    {
+      "name": "Coca Cola Lata",
+      "capacity": "355 ml",
+      "cols": 3,
+      "file": "12.png"
+    },
+    {
+      "name": "Ginger Ale",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "13.png"
+    },
+    {
+      "name": "Fanta Naranja",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "14.png"
+    },
+    {
+      "name": "Fanta Fresa",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "15.png"
+    },
+    {
+      "name": "Topo Chico",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "16.png"
+    },
+    {
+      "name": "Sprite",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "17.png"
+    },
+    {
+      "name": "Sidral Mundet",
+      "capacity": "600 ml",
+      "cols": 3,
+      "file": "18.png"
+    }
+  ]
+}

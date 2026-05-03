@@ -1,0 +1,17 @@
+{
+  "category": "Brandy",
+  "products": [
+    {
+      "name": "Brandy Torres 10",
+      "capacity": "700 ml",
+      "cols": 2,
+      "file": "01.png"
+    },
+    {
+      "name": "Brandy Azteca de Oro",
+      "capacity": "700 ml",
+      "cols": 2,
+      "file": "02.png"
+    }
+  ]
+}
