@@ -1,23 +1,11 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
-  ActivityIndicator, KeyboardAvoidingView, Platform, Alert, StatusBar,
+  ActivityIndicator, KeyboardAvoidingView, Platform, StatusBar,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { loginAdmin } from '../../src/services/api';
 import { useAuth } from '../../src/context/AuthContext';
-
-const C = {
-  bg: '#f5f5f5',
-  white: '#ffffff',
-  text: '#111111',
-  sub: '#666666',
-  muted: '#999999',
-  card: '#f0f0f0',
-  border: '#ebebeb',
-  accent: '#111111',
-  error: '#c40000',
-};
+import { A } from '../../src/theme/admin';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
@@ -38,51 +26,52 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
-      style={styles.root}
+      style={s.root}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <StatusBar barStyle="dark-content" backgroundColor={C.bg} />
+      <StatusBar barStyle="dark-content" backgroundColor={A.bg} />
 
-      <View style={styles.top}>
-        <View style={styles.logoCircle}>
-          <Text style={styles.logoText}>369</Text>
+      <View style={s.top}>
+        <View style={s.logoCircle}>
+          <Text style={s.logoText}>369</Text>
         </View>
-        <Text style={styles.title}>Panel de Admin</Text>
-        <Text style={styles.subtitle}>Acceso exclusivo para administradores</Text>
+        <Text style={s.brandSub}>LICORERÍA</Text>
+        <Text style={s.title}>Panel de Admin</Text>
+        <Text style={s.subtitle}>Acceso exclusivo para administradores</Text>
       </View>
 
-      <View style={styles.form}>
-        <Text style={styles.label}>Usuario</Text>
+      <View style={s.form}>
+        <Text style={s.label}>Usuario</Text>
         <TextInput
-          style={styles.input}
+          style={s.input}
           placeholder="Ingresa tu usuario"
-          placeholderTextColor={C.muted}
+          placeholderTextColor={A.muted}
           value={username}
           onChangeText={setUsername}
           autoCapitalize="none"
           autoCorrect={false}
         />
 
-        <Text style={styles.label}>Contraseña</Text>
+        <Text style={s.label}>Contraseña</Text>
         <TextInput
-          style={styles.input}
+          style={s.input}
           placeholder="••••••••"
-          placeholderTextColor={C.muted}
+          placeholderTextColor={A.muted}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
 
         <TouchableOpacity
-          style={[styles.btn, loading && { opacity: 0.6 }]}
+          style={[s.btn, loading && { opacity: 0.6 }]}
           onPress={handleLogin}
           disabled={loading}
           activeOpacity={0.8}
         >
           {loading ? (
-            <ActivityIndicator color="#ffffff" />
+            <ActivityIndicator color={A.primaryText} />
           ) : (
-            <Text style={styles.btnText}>Ingresar</Text>
+            <Text style={s.btnText}>Ingresar</Text>
           )}
         </TouchableOpacity>
       </View>
@@ -90,46 +79,49 @@ export default function LoginScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: C.bg,
+    backgroundColor: A.bg,
     justifyContent: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 28,
   },
   top: { alignItems: 'center', marginBottom: 40 },
   logoCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: C.accent,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
+    width: 88, height: 88, borderRadius: 22,
+    backgroundColor: A.primary,
+    justifyContent: 'center', alignItems: 'center',
+    marginBottom: 14,
+    shadowColor: A.shadow,
+    shadowOpacity: 0.18,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 10,
+    elevation: 4,
   },
-  logoText: { fontSize: 22, fontWeight: '900', color: '#ffffff', letterSpacing: -1 },
-  title: { fontSize: 26, fontWeight: '800', color: C.text, letterSpacing: -0.4 },
-  subtitle: { fontSize: 14, color: C.sub, marginTop: 6, textAlign: 'center' },
+  logoText: { fontSize: 26, fontWeight: '900', color: A.primaryText, letterSpacing: -1 },
+  brandSub: { fontSize: 11, color: A.muted, fontWeight: '800', letterSpacing: 2, marginBottom: 4 },
+  title: { fontSize: 26, fontWeight: '800', color: A.text, letterSpacing: -0.4 },
+  subtitle: { fontSize: 13, color: A.sub, marginTop: 6, textAlign: 'center' },
 
-  form: { gap: 6 },
-  label: { fontSize: 13, fontWeight: '700', color: C.text, marginBottom: 4, marginTop: 8 },
+  form: { gap: 4 },
+  label: { fontSize: 13, fontWeight: '700', color: A.text, marginBottom: 6, marginTop: 8 },
   input: {
-    backgroundColor: C.white,
+    backgroundColor: A.surface,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: C.border,
-    color: C.text,
+    borderColor: A.border,
+    color: A.text,
     paddingHorizontal: 16,
     paddingVertical: 15,
     fontSize: 15,
     marginBottom: 4,
   },
   btn: {
-    backgroundColor: C.accent,
+    backgroundColor: A.primary,
     borderRadius: 14,
     paddingVertical: 17,
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 18,
   },
-  btnText: { color: '#ffffff', fontWeight: '800', fontSize: 16 },
+  btnText: { color: A.primaryText, fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
 });

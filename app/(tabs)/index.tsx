@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Image, TouchableOpacity,
-  Dimensions, Platform, StatusBar,
+  Dimensions, Platform, StatusBar, ActivityIndicator, RefreshControl,
+  TextInput,
 } from 'react-native';
+import { useRouter } from 'expo-router';
+import { getPromotions, getProducts } from '../../src/services/api';
 
 const { width } = Dimensions.get('window');
 const GRID_PAD = 14;
@@ -19,102 +22,39 @@ const C = {
   olive: '#6B6B1E',
 };
 
-type Layout = 'full' | 'half' | 'half-alone-left' | 'half-alone-center';
+type PromoType = 'normal' | 'featured' | 'hero' | 'footer';
 
 type Promotion = {
-  id: string;
-  image: any;
+  _id: string;
+  type: PromoType;
+  image?: string;
   title?: string;
   subtitle?: string;
   price?: string;
   priceSuffix?: string;
-  layout: Layout;
+  order?: number;
 };
 
-const PROMOTIONS: Promotion[] = [
-  {
-    id: 'caguamon-combo',
-    image: require('../../assets/home-caguamones.png'),
-    title: 'Tecate + Indio',
-    subtitle: 'Caguamón 1.2L / 1.18L',
-    price: '2 x $85',
-    layout: 'full',
-  },
-  {
-    id: 'xx-lager',
-    image: require('../../assets/home-xx-lager.png'),
-    title: 'XX Laguer',
-    subtitle: 'Caguamon 1.18L',
-    price: '2x $93',
-    layout: 'half',
-  },
-  {
-    id: 'sol-mezclas',
-    image: require('../../assets/home-sol-mezclas.png'),
-    title: 'SOL Mezclas',
-    price: '2 x $48',
-    layout: 'half',
-  },
-  {
-    id: 'tecate-lata',
-    image: require('../../assets/home-tecate-indio-lata.png'),
-    title: 'Tecate Lata',
-    subtitle: '473 ml',
-    price: '2x $42',
-    layout: 'half',
-  },
-  {
-    id: 'jimador',
-    image: require('../../assets/home-jimador.png'),
-    title: 'Jimador New MIX',
-    price: '$35',
-    priceSuffix: 'C/U',
-    layout: 'half',
-  },
-  {
-    id: 'indio-lata',
-    image: require('../../assets/home-tecate-indio-lata.png'),
-    title: 'Indio Lata',
-    subtitle: '473 ml',
-    layout: 'half-alone-left',
-  },
-  {
-    id: 'victoria',
-    image: require('../../assets/home-victoria.png'),
-    title: 'Victoria Lata',
-    subtitle: '710 ml',
-    price: '$36',
-    layout: 'half-alone-center',
-  },
-];
-
 type Row =
-  | { type: 'full';  items: [Promotion] }
-  | { type: 'pair';  items: [Promotion, Promotion] }
-  | { type: 'left';  items: [Promotion] }
+  | { type: 'full';   items: [Promotion] }
+  | { type: 'pair';   items: [Promotion, Promotion] }
   | { type: 'center'; items: [Promotion] };
 
 function buildRows(promos: Promotion[]): Row[] {
   const rows: Row[] = [];
   let pending: Promotion | null = null;
 
-  const flushPending = () => {
+  const flush = () => {
     if (pending) {
-      rows.push({ type: 'left', items: [pending] });
+      rows.push({ type: 'center', items: [pending] });
       pending = null;
     }
   };
 
   for (const p of promos) {
-    if (p.layout === 'full') {
-      flushPending();
+    if (p.type === 'featured') {
+      flush();
       rows.push({ type: 'full', items: [p] });
-    } else if (p.layout === 'half-alone-left') {
-      flushPending();
-      rows.push({ type: 'left', items: [p] });
-    } else if (p.layout === 'half-alone-center') {
-      flushPending();
-      rows.push({ type: 'center', items: [p] });
     } else {
       if (pending) {
         rows.push({ type: 'pair', items: [pending, p] });
@@ -124,30 +64,75 @@ function buildRows(promos: Promotion[]): Row[] {
       }
     }
   }
-  flushPending();
+  flush();
   return rows;
 }
 
 function PromoCard({ p, w, full }: { p: Promotion; w: number; full?: boolean }) {
-  const imgH = full ? w * 0.55 : w * 1.4;
+  const imgH = full ? w * 0.55 : w * 1.1;
+  const [aspect, setAspect] = useState<number | null>(null);
+
+  let fitW = w;
+  let fitH = imgH;
+  if (aspect) {
+    fitH = Math.min(imgH, w / aspect);
+    fitW = fitH * aspect;
+  }
+
+  const textBlock = (
+    <>
+      {p.title ? (
+        <View style={s.titleWrap}>
+          <Text style={[s.cardName, !full && { textAlign: 'center' }]}>
+            {p.title}
+            {p.subtitle ? <Text style={s.nameRegular}>{'\n' + p.subtitle}</Text> : null}
+          </Text>
+        </View>
+      ) : null}
+      {p.price ? (
+        <View style={[
+          s.priceRow,
+          full && s.priceRowFull,
+          !full && { justifyContent: 'center' },
+        ]}>
+          <Text style={s.cardPrice}>{p.price}</Text>
+          {p.priceSuffix ? <Text style={s.priceSuffix}>{p.priceSuffix}</Text> : null}
+        </View>
+      ) : null}
+    </>
+  );
+
+  const imgBlock = (
+    <View style={[s.imgBox, { width: w, height: imgH, marginTop: full ? 0 : 6 }]}>
+      {p.image ? (
+        <Image
+          source={{ uri: p.image }}
+          style={{ width: fitW, height: fitH }}
+          resizeMode="contain"
+          onLoad={(e: any) => {
+            if (aspect) return;
+            const src = e?.nativeEvent?.source;
+            if (src?.width && src?.height) setAspect(src.width / src.height);
+          }}
+        />
+      ) : (
+        <View style={s.imgPlaceholder}><Text style={{ fontSize: 40 }}>🍶</Text></View>
+      )}
+    </View>
+  );
+
   return (
     <TouchableOpacity style={{ width: w }} activeOpacity={0.85}>
-      <View style={[s.imgBox, { width: w, height: imgH }]}>
-        <Image source={p.image} style={s.img} resizeMode="contain" />
-      </View>
-
-      {p.title && (
-        <Text style={s.cardName}>
-          {p.title}
-          {p.subtitle && <Text style={s.nameRegular}>{'\n' + p.subtitle}</Text>}
-        </Text>
-      )}
-
-      {p.price && (
-        <View style={[s.priceRow, full && s.priceRowFull]}>
-          <Text style={s.cardPrice}>{p.price}</Text>
-          {p.priceSuffix && <Text style={s.priceSuffix}>{p.priceSuffix}</Text>}
-        </View>
+      {full ? (
+        <>
+          {imgBlock}
+          {textBlock}
+        </>
+      ) : (
+        <>
+          {textBlock}
+          {imgBlock}
+        </>
       )}
     </TouchableOpacity>
   );
@@ -162,81 +147,196 @@ function SearchIcon() {
   );
 }
 
-function MenuIcon() {
-  return (
-    <View style={{ width: 22, height: 16, justifyContent: 'space-between' }}>
-      <View style={{ height: 2, backgroundColor: '#111', borderRadius: 1 }} />
-      <View style={{ height: 2, backgroundColor: '#111', borderRadius: 1 }} />
-      <View style={{ height: 2, backgroundColor: '#111', borderRadius: 1 }} />
-    </View>
-  );
+type SearchProduct = {
+  _id: string;
+  name: string;
+  capacity?: string;
+  price?: number;
+  image?: string;
+  category?: { _id: string; name: string } | string;
+};
+
+function normalize(s: string) {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 }
 
 export default function HomeScreen() {
-  const rows = buildRows(PROMOTIONS);
+  const router = useRouter();
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [products, setProducts] = useState<SearchProduct[]>([]);
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const load = async () => {
+    try {
+      const [promRes, prodRes] = await Promise.all([getPromotions(), getProducts()]);
+      setPromotions((promRes.data || []) as Promotion[]);
+      setProducts((prodRes.data || []) as SearchProduct[]);
+    } catch {
+      setPromotions([]);
+      setProducts([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
+  const onRefresh = useCallback(() => { setRefreshing(true); load(); }, []);
+
+  const results = useMemo(() => {
+    const q = normalize(query.trim());
+    if (!q) return [];
+    return products
+      .filter((p) => normalize(p.name).includes(q))
+      .slice(0, 25);
+  }, [query, products]);
+  const searching = query.trim().length > 0;
+
+  const heroPromos    = promotions.filter((p) => p.type === 'hero');
+  const footerPromos  = promotions.filter((p) => p.type === 'footer');
+  const contentPromos = promotions.filter((p) => p.type === 'normal' || p.type === 'featured');
+  const rows = buildRows(contentPromos);
 
   return (
     <View style={s.root}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       <View style={s.header}>
-        <View style={s.menuBtn}><MenuIcon /></View>
-        <Text style={s.headerTitle}>LICORERIA 369</Text>
+        <Text
+          style={s.headerTitle}
+          onLongPress={() => router.push('/admin/login')}
+          delayLongPress={1500}
+          suppressHighlighting
+        >
+          LICORERIA 369
+        </Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={s.hero}>
-          <Image source={require('../../assets/home-hero-cuervo.png')} style={s.heroImg} resizeMode="cover" />
-        </View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={C.olive} />}
+      >
+        {heroPromos.map((p) => (
+          p.image ? (
+            <View key={p._id} style={s.hero}>
+              <Image source={{ uri: p.image }} style={s.heroImg} resizeMode="cover" />
+            </View>
+          ) : null
+        ))}
 
         <View style={s.searchRow}>
-          <Text style={s.searchText}>Que bebida quieres ?</Text>
-          <SearchIcon />
+          <TextInput
+            style={s.searchInput}
+            value={query}
+            onChangeText={setQuery}
+            placeholder="Que bebida quieres ?"
+            placeholderTextColor={C.muted}
+            returnKeyType="search"
+            autoCorrect={false}
+          />
+          {query.length > 0 ? (
+            <TouchableOpacity onPress={() => setQuery('')} hitSlop={10}>
+              <Text style={s.searchClear}>✕</Text>
+            </TouchableOpacity>
+          ) : (
+            <SearchIcon />
+          )}
         </View>
 
-        <View style={s.banner}>
-          <Text style={s.bannerText}>OFERTA EN ESTAS{'\n'}BEBIDAS!!</Text>
-        </View>
+        {searching ? (
+          <View style={s.resultsWrap}>
+            {results.length === 0 ? (
+              <Text style={s.noResults}>Sin resultados para "{query}"</Text>
+            ) : (
+              results.map((p) => {
+                const catId = typeof p.category === 'object' ? p.category?._id : p.category;
+                const catName = typeof p.category === 'object' ? p.category?.name : '';
+                return (
+                  <TouchableOpacity
+                    key={p._id}
+                    style={s.resultItem}
+                    activeOpacity={0.75}
+                    onPress={() => {
+                      if (catId) router.push(`/category/${catId}?name=${encodeURIComponent(catName || '')}`);
+                    }}
+                  >
+                    <View style={s.resultImgWrap}>
+                      {p.image ? (
+                        <Image source={{ uri: p.image }} style={s.resultImg} resizeMode="contain" />
+                      ) : null}
+                    </View>
+                    <View style={s.resultInfo}>
+                      <Text style={s.resultName} numberOfLines={2}>{p.name}</Text>
+                      {p.capacity ? <Text style={s.resultMeta}>{p.capacity}</Text> : null}
+                      {catName ? <Text style={s.resultCat}>{catName}</Text> : null}
+                    </View>
+                    {p.price != null ? <Text style={s.resultPrice}>${p.price}</Text> : null}
+                  </TouchableOpacity>
+                );
+              })
+            )}
+          </View>
+        ) : null}
 
-        <Text style={s.secTitle}>Explora nuestras opciones</Text>
+        {!searching && (
+          <View style={s.offerBanner}>
+            <Text style={s.offerBannerText}>OFERTA EN ESTAS{'\n'}BEBIDAS!!</Text>
+          </View>
+        )}
 
-        <View style={s.grid}>
-          {rows.map((row, i) => {
-            if (row.type === 'full') {
+        {!searching && <Text style={s.secTitle}>Explora nuestras opciones</Text>}
+
+        {!searching && (loading ? (
+          <View style={s.loadingWrap}>
+            <ActivityIndicator size="large" color={C.olive} />
+          </View>
+        ) : contentPromos.length === 0 && heroPromos.length === 0 && footerPromos.length === 0 ? (
+          <View style={s.empty}>
+            <Text style={{ fontSize: 52 }}>🍾</Text>
+            <Text style={s.emptyTitle}>Sin promociones todavía</Text>
+            <Text style={s.emptySub}>Agrega promociones desde el panel de admin</Text>
+          </View>
+        ) : (
+          <View style={s.grid}>
+            {rows.map((row, i) => {
+              if (row.type === 'full') {
+                return (
+                  <View key={i} style={s.rowFull}>
+                    <PromoCard p={row.items[0]} w={FULL_W} full />
+                  </View>
+                );
+              }
+              if (row.type === 'pair') {
+                return (
+                  <View key={i} style={s.rowPair}>
+                    <PromoCard p={row.items[0]} w={HALF_W} />
+                    <PromoCard p={row.items[1]} w={HALF_W} />
+                  </View>
+                );
+              }
               return (
-                <View key={i} style={s.rowFull}>
-                  <PromoCard p={row.items[0]} w={FULL_W} full />
-                </View>
-              );
-            }
-            if (row.type === 'pair') {
-              return (
-                <View key={i} style={s.rowPair}>
+                <View key={i} style={s.rowCenter}>
                   <PromoCard p={row.items[0]} w={HALF_W} />
-                  <PromoCard p={row.items[1]} w={HALF_W} />
                 </View>
               );
-            }
-            if (row.type === 'left') {
-              return (
-                <View key={i} style={s.rowLeft}>
-                  <PromoCard p={row.items[0]} w={HALF_W} />
-                </View>
-              );
-            }
-            return (
-              <View key={i} style={s.rowCenter}>
-                <PromoCard p={row.items[0]} w={HALF_W} />
-              </View>
-            );
-          })}
-        </View>
+            })}
+          </View>
+        ))}
 
-        <View style={s.bottomImg}>
-          <Image source={require('../../assets/home-cuervo-mezcal.png')} style={s.bottomImgFile} resizeMode="cover" />
-        </View>
+        {!searching && footerPromos.map((p, i) => (
+          p.image ? (
+            <View
+              key={p._id}
+              style={[s.footerImg, i === footerPromos.length - 1 && { marginBottom: 0 }]}
+            >
+              <Image source={{ uri: p.image }} style={s.footerImgFile} resizeMode="cover" />
+            </View>
+          ) : null
+        ))}
 
-        <View style={{ height: 24 }} />
+        {footerPromos.length === 0 && <View style={{ height: 32 }} />}
       </ScrollView>
     </View>
   );
@@ -254,16 +354,20 @@ const s = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: C.border,
   },
-  menuBtn: {
-    position: 'absolute',
-    left: 16,
-    top: Platform.OS === 'android' ? 46 : 54,
-    padding: 4,
-  },
   headerTitle: { fontSize: 20, fontWeight: '800', color: C.text, letterSpacing: 1.2 },
 
-  hero: { width, height: 210, backgroundColor: '#e8e0d0' },
+  hero: {
+    width,
+    height: 210,
+    backgroundColor: '#e8e0d0',
+    marginTop: 22,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
   heroImg: { width: '100%', height: '100%' },
+
+  footerImg: { width, height: 210, marginTop: 8 },
+  footerImgFile: { width: '100%', height: '100%' },
 
   searchRow: {
     flexDirection: 'row',
@@ -276,20 +380,51 @@ const s = StyleSheet.create({
     borderColor: C.border,
     borderRadius: 6,
     paddingHorizontal: 14,
-    paddingVertical: 13,
+    paddingVertical: Platform.OS === 'ios' ? 13 : 6,
   },
   searchText: { fontSize: 16, color: C.muted },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: C.text,
+    padding: 0,
+    margin: 0,
+  },
+  searchClear: { fontSize: 16, color: C.muted, fontWeight: '700', paddingHorizontal: 4 },
 
-  banner: {
+  resultsWrap: { paddingHorizontal: 14, marginBottom: 24 },
+  noResults: { fontSize: 14, color: C.muted, paddingVertical: 24, textAlign: 'center' },
+  resultItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    gap: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: C.border,
+  },
+  resultImgWrap: {
+    width: 56, height: 56, borderRadius: 8,
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'center', alignItems: 'center',
+    overflow: 'hidden',
+  },
+  resultImg: { width: '100%', height: '100%' },
+  resultInfo: { flex: 1 },
+  resultName: { fontSize: 14, fontWeight: '700', color: C.text, lineHeight: 18 },
+  resultMeta: { fontSize: 12, color: C.sub, marginTop: 2 },
+  resultCat: { fontSize: 11, color: C.muted, marginTop: 2 },
+  resultPrice: { fontSize: 16, fontWeight: '900', color: C.text },
+
+  offerBanner: {
     backgroundColor: C.olive,
     marginHorizontal: 14,
-    marginBottom: 26,
-    borderRadius: 6,
-    paddingVertical: 30,
+    marginBottom: 22,
+    borderRadius: 8,
+    paddingVertical: 28,
     paddingHorizontal: 16,
   },
-  bannerText: {
-    color: '#fff',
+  offerBannerText: {
+    color: '#ffffff',
     fontSize: 26,
     fontWeight: '900',
     textAlign: 'center',
@@ -306,26 +441,31 @@ const s = StyleSheet.create({
     textAlign: 'center',
   },
 
-  /* Grid rows */
+  loadingWrap: { paddingVertical: 80, alignItems: 'center' },
+  empty: { alignItems: 'center', paddingTop: 40, paddingHorizontal: 30 },
+  emptyTitle: { fontSize: 20, fontWeight: '800', color: C.text, marginTop: 14 },
+  emptySub: { fontSize: 14, color: C.muted, marginTop: 6, textAlign: 'center' },
+
   grid: { paddingHorizontal: GRID_PAD },
   rowFull:   { marginBottom: 28 },
   rowPair:   { flexDirection: 'row', gap: GRID_GAP, marginBottom: 28, alignItems: 'flex-start' },
-  rowLeft:   { marginBottom: 28, alignItems: 'flex-start' },
   rowCenter: { marginBottom: 28, alignItems: 'center' },
 
-  /* Card internals */
   imgBox: {
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  img: { width: '100%', height: '100%' },
+  imgPlaceholder: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 
+  titleWrap: {
+    minHeight: 40,
+    justifyContent: 'center',
+  },
   cardName: {
     fontSize: 15,
     fontWeight: '700',
     color: C.text,
-    marginTop: -12,
     lineHeight: 20,
   },
   nameRegular: {
@@ -354,7 +494,4 @@ const s = StyleSheet.create({
     marginLeft: 3,
     marginBottom: 5,
   },
-
-  bottomImg: { width, height: 210, marginTop: 14 },
-  bottomImgFile: { width: '100%', height: '100%' },
 });

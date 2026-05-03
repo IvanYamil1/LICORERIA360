@@ -1,8 +1,15 @@
 import { Tabs } from 'expo-router';
-import { View, Text, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeIcon, GridIcon, PersonIcon } from '../../src/components/TabIcons';
+import { useAuth } from '../../src/context/AuthContext';
 
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
+  const { isAdmin } = useAuth();
+  const baseHeight = Platform.OS === 'ios' ? 60 : 56;
+  const basePadBottom = Platform.OS === 'ios' ? 0 : 8;
+
   return (
     <Tabs
       screenOptions={{
@@ -11,8 +18,8 @@ export default function TabsLayout() {
           backgroundColor: '#ffffff',
           borderTopColor: '#e8e8e8',
           borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? 84 : 62,
-          paddingBottom: Platform.OS === 'ios' ? 24 : 8,
+          height: baseHeight + insets.bottom,
+          paddingBottom: basePadBottom + insets.bottom,
           paddingTop: 8,
           elevation: 0,
           shadowOpacity: 0,
@@ -47,6 +54,7 @@ export default function TabsLayout() {
         options={{
           tabBarLabel: 'Admin',
           tabBarIcon: ({ focused }) => <PersonIcon focused={focused} />,
+          href: isAdmin ? undefined : null,
         }}
       />
     </Tabs>
