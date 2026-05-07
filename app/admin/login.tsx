@@ -6,19 +6,34 @@ import {
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { A } from '../../src/theme/admin';
+import { loginAdmin } from '../../src/services/api';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const { login } = useAuth();
   const router = useRouter();
 
   const handleLogin = async () => {
+    if (!username.trim() || !password) {
+      setError('Ingresa usuario y contraseña');
+      return;
+    }
+    setError('');
     setLoading(true);
     try {
-      await login('dev-bypass-token');
+      const res = await loginAdmin(username.trim(), password);
+      if (!res.data?.token) {
+        setError('Respuesta inválida del servidor');
+        return;
+      }
+      await login(res.data.token);
       router.replace('/admin');
+    } catch (e: any) {
+      const msg = e?.response?.data?.error || 'No se pudo iniciar sesión';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -61,6 +76,8 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
         />
+
+        {error ? <Text style={s.errorText}>{error}</Text> : null}
 
         <TouchableOpacity
           style={[s.btn, loading && { opacity: 0.6 }]}
@@ -124,4 +141,11 @@ const s = StyleSheet.create({
     marginTop: 18,
   },
   btnText: { color: A.primaryText, fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
+  errorText: {
+    color: A.error,
+    fontSize: 13,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginTop: 12,
+  },
 });

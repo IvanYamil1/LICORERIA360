@@ -43,6 +43,7 @@ export default function AdminProducts() {
   const insets = useSafeAreaInsets();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
+  const [filterCategoryId, setFilterCategoryId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -159,6 +160,12 @@ export default function AdminProducts() {
     return <View style={styles.center}><ActivityIndicator size="large" color={C.text} /></View>;
   }
 
+  const filteredProducts = filterCategoryId
+    ? products.filter(
+        (p) => (typeof p.category === 'object' ? p.category?._id : p.category) === filterCategoryId,
+      )
+    : products;
+
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor={C.white} />
@@ -171,11 +178,49 @@ export default function AdminProducts() {
       </View>
       <View style={styles.pageHeader}>
         <Text style={styles.pageTitle}>Productos</Text>
-        <Text style={styles.pageSub}>{products.length} registrados</Text>
+        <Text style={styles.pageSub}>
+          {filteredProducts.length} {filterCategoryId ? 'en categoría' : 'registrados'}
+        </Text>
+      </View>
+
+      <View style={styles.filterBar}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterRow}
+        >
+          <TouchableOpacity
+            style={[styles.chip, filterCategoryId === null && styles.chipActive]}
+            onPress={() => setFilterCategoryId(null)}
+            activeOpacity={0.75}
+          >
+            <Text style={[styles.chipText, filterCategoryId === null && styles.chipTextActive]}>
+              Todas ({products.length})
+            </Text>
+          </TouchableOpacity>
+          {categories.map((c) => {
+            const count = products.filter(
+              (p) => (typeof p.category === 'object' ? p.category?._id : p.category) === c._id,
+            ).length;
+            const active = filterCategoryId === c._id;
+            return (
+              <TouchableOpacity
+                key={c._id}
+                style={[styles.chip, active && styles.chipActive]}
+                onPress={() => setFilterCategoryId(c._id)}
+                activeOpacity={0.75}
+              >
+                <Text style={[styles.chipText, active && styles.chipTextActive]}>
+                  {c.name} ({count})
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
       </View>
 
       <FlatList
-        data={products}
+        data={filteredProducts}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
         ListEmptyComponent={
@@ -400,6 +445,24 @@ const styles = StyleSheet.create({
   },
   pageTitle: { fontSize: 26, fontWeight: '800', color: C.text, letterSpacing: -0.5 },
   pageSub: { fontSize: 13, color: C.sub, marginTop: 2, fontWeight: '500' },
+
+  filterBar: {
+    backgroundColor: C.white,
+    borderBottomWidth: 1,
+    borderBottomColor: C.border,
+  },
+  filterRow: { paddingHorizontal: 16, paddingVertical: 12, gap: 8 },
+  chip: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: C.border,
+    backgroundColor: C.card,
+  },
+  chipActive: { backgroundColor: C.accent, borderColor: C.accent },
+  chipText: { fontSize: 13, fontWeight: '700', color: C.sub },
+  chipTextActive: { color: '#fff' },
 
   list: { padding: 20, gap: 10, paddingBottom: 100 },
 

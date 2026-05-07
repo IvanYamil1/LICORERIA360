@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Image, TouchableOpacity,
   Dimensions, Platform, StatusBar, ActivityIndicator, RefreshControl,
   TextInput,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { getPromotions, getProducts } from '../../src/services/api';
 
 const { width } = Dimensions.get('window');
@@ -160,6 +160,9 @@ function normalize(s: string) {
   return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 }
 
+const SECRET_TAPS = 5;
+const SECRET_WINDOW_MS = 2500;
+
 export default function HomeScreen() {
   const router = useRouter();
   const [promotions, setPromotions] = useState<Promotion[]>([]);
@@ -167,6 +170,22 @@ export default function HomeScreen() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const tapCountRef = useRef(0);
+  const lastTapRef = useRef(0);
+
+  const handleSecretTap = () => {
+    const now = Date.now();
+    if (now - lastTapRef.current > SECRET_WINDOW_MS) {
+      tapCountRef.current = 1;
+    } else {
+      tapCountRef.current += 1;
+    }
+    lastTapRef.current = now;
+    if (tapCountRef.current >= SECRET_TAPS) {
+      tapCountRef.current = 0;
+      router.push('/admin/login');
+    }
+  };
 
   const load = async () => {
     try {
@@ -184,6 +203,13 @@ export default function HomeScreen() {
 
   useEffect(() => { load(); }, []);
   const onRefresh = useCallback(() => { setRefreshing(true); load(); }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+      if (Platform.OS === 'android') StatusBar.setBackgroundColor('#ffffff');
+    }, []),
+  );
 
   const results = useMemo(() => {
     const q = normalize(query.trim());
@@ -204,13 +230,9 @@ export default function HomeScreen() {
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       <View style={s.header}>
-        <Text
-          style={s.headerTitle}
-          onLongPress={() => router.push('/admin/login')}
-          delayLongPress={1500}
-          suppressHighlighting
-        >
-          LICORERIA 369
+        <Text style={s.headerTitle}>
+          LICORERIA{' '}
+          <Text suppressHighlighting onPress={handleSecretTap}>369</Text>
         </Text>
       </View>
 
@@ -336,6 +358,16 @@ export default function HomeScreen() {
           ) : null
         ))}
 
+        {!searching && (
+          <TouchableOpacity
+            style={s.aboutLink}
+            onPress={() => router.push('/about')}
+            activeOpacity={0.7}
+          >
+            <Text style={s.aboutLinkText}>Contacto · Política · Términos</Text>
+          </TouchableOpacity>
+        )}
+
         {footerPromos.length === 0 && <View style={{ height: 32 }} />}
       </ScrollView>
     </View>
@@ -445,6 +477,9 @@ const s = StyleSheet.create({
   empty: { alignItems: 'center', paddingTop: 40, paddingHorizontal: 30 },
   emptyTitle: { fontSize: 20, fontWeight: '800', color: C.text, marginTop: 14 },
   emptySub: { fontSize: 14, color: C.muted, marginTop: 6, textAlign: 'center' },
+
+  aboutLink: { paddingVertical: 14, alignItems: 'center' },
+  aboutLinkText: { fontSize: 12, color: C.muted, fontWeight: '600' },
 
   grid: { paddingHorizontal: GRID_PAD },
   rowFull:   { marginBottom: 28 },

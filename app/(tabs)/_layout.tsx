@@ -7,8 +7,7 @@ import { useAuth } from '../../src/context/AuthContext';
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
   const { isAdmin } = useAuth();
-  const baseHeight = Platform.OS === 'ios' ? 60 : 56;
-  const basePadBottom = Platform.OS === 'ios' ? 0 : 8;
+  const baseHeight = 56;
 
   return (
     <Tabs
@@ -19,8 +18,8 @@ export default function TabsLayout() {
           borderTopColor: '#e8e8e8',
           borderTopWidth: 1,
           height: baseHeight + insets.bottom,
-          paddingBottom: basePadBottom + insets.bottom,
-          paddingTop: 8,
+          paddingBottom: insets.bottom,
+          paddingTop: 6,
           elevation: 0,
           shadowOpacity: 0,
         },
@@ -30,9 +29,9 @@ export default function TabsLayout() {
           fontSize: 11,
           fontWeight: '600',
           letterSpacing: 0.1,
-          marginTop: 3,
+          marginTop: 2,
         },
-        tabBarItemStyle: { paddingTop: 2 },
+        tabBarItemStyle: { paddingTop: 2, paddingBottom: 2 },
       }}
     >
       <Tabs.Screen

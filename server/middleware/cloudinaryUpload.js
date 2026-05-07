@@ -17,4 +17,16 @@ const storage = new CloudinaryStorage({
   },
 });
 
-module.exports = multer({ storage });
+module.exports = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 MB por archivo
+    files: 2,                   // máx 2 archivos por request (banners hero+footer)
+  },
+  fileFilter: (req, file, cb) => {
+    if (!/^image\/(jpe?g|png|webp)$/.test(file.mimetype)) {
+      return cb(new Error('Tipo de archivo no permitido'));
+    }
+    cb(null, true);
+  },
+});

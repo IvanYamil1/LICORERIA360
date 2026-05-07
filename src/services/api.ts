@@ -1,8 +1,30 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
-// Cambia esta IP por la IP local de tu computadora cuando corras el servidor
-export const API_URL = 'http://localhost:3001/api';
+// Resolución de API_URL en este orden:
+// 1. EXPO_PUBLIC_API_URL — definido en .env del proyecto, se inyecta en build time.
+//    Producción: EXPO_PUBLIC_API_URL=https://tu-backend.onrender.com/api
+// 2. Web local: http://localhost:3001/api
+// 3. Dev nativo (Expo Go): IP de tu PC vía Constants.expoConfig.hostUri
+// 4. Fallback: LAN_IP hardcoded (cambia si tu IP cambia)
+const LAN_IP = '192.168.100.6';
+const PORT = 3001;
+
+function resolveApiUrl(): string {
+  const fromEnv = process.env.EXPO_PUBLIC_API_URL;
+  if (fromEnv) return fromEnv;
+  if (Platform.OS === 'web') return `http://localhost:${PORT}/api`;
+  const hostUri =
+    (Constants.expoConfig as any)?.hostUri ||
+    (Constants as any).manifest?.debuggerHost ||
+    (Constants as any).manifest2?.extra?.expoGo?.debuggerHost;
+  const devHost = typeof hostUri === 'string' ? hostUri.split(':')[0] : null;
+  return `http://${devHost || LAN_IP}:${PORT}/api`;
+}
+
+export const API_URL = resolveApiUrl();
 
 const api = axios.create({ baseURL: API_URL });
 

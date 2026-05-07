@@ -2,6 +2,8 @@ const router = require('express').Router();
 const Category = require('../models/Category');
 const authMiddleware = require('../middleware/auth');
 const upload = require('../middleware/cloudinaryUpload');
+const audit = require('../middleware/audit');
+const { strField, numField, objectIdParam } = require('../middleware/validators');
 
 const filesAccepted = upload.fields([
   { name: 'image',       maxCount: 1 },
@@ -10,13 +12,10 @@ const filesAccepted = upload.fields([
 ]);
 
 function sanitizeBody(body) {
-  const out = {};
-  if (body.name !== undefined) out.name = String(body.name).trim();
-  if (body.order !== undefined) {
-    const n = Number(body.order);
-    out.order = Number.isFinite(n) ? n : 0;
-  }
-  return out;
+  return {
+    ...(body.name  !== undefined && { name:  strField(body.name, 'name', { required: true, max: 60 }) }),
+    ...(body.order !== undefined && { order: numField(body.order, 'order', { min: 0, integer: true }) }),
+  };
 }
 
 function applyFiles(out, files) {
@@ -34,47 +33,45 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const cat = await Category.findById(req.params.id);
+    const id = objectIdParam(req);
+    const cat = await Category.findById(id);
     if (!cat) return res.status(404).json({ error: 'No encontrada' });
     res.json(cat);
-  } catch {
-    res.status(500).json({ error: 'Error al obtener categoría' });
-  }
+  } catch (e) { next(e); }
 });
 
-router.post('/', authMiddleware, filesAccepted, async (req, res) => {
+router.post('/', authMiddleware, filesAccepted, async (req, res, next) => {
   try {
     const data = sanitizeBody(req.body);
     applyFiles(data, req.files);
     const category = new Category(data);
     await category.save();
+    audit(req, 'create', 'category', category._id, { name: category.name });
     res.status(201).json(category);
-  } catch {
-    res.status(500).json({ error: 'Error al crear categoría' });
-  }
+  } catch (e) { next(e); }
 });
 
-router.put('/:id', authMiddleware, filesAccepted, async (req, res) => {
+router.put('/:id', authMiddleware, filesAccepted, async (req, res, next) => {
   try {
+    const id = objectIdParam(req);
     const data = sanitizeBody(req.body);
     applyFiles(data, req.files);
-    const category = await Category.findByIdAndUpdate(req.params.id, data, { new: true });
+    const category = await Category.findByIdAndUpdate(id, data, { new: true });
     if (!category) return res.status(404).json({ error: 'Categoría no encontrada' });
+    audit(req, 'update', 'category', category._id, { changes: Object.keys(data) });
     res.json(category);
-  } catch {
-    res.status(500).json({ error: 'Error al actualizar categoría' });
-  }
+  } catch (e) { next(e); }
 });
 
-router.delete('/:id', authMiddleware, async (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res, next) => {
   try {
-    await Category.findByIdAndDelete(req.params.id);
+    const id = objectIdParam(req);
+    const removed = await Category.findByIdAndDelete(id);
+    if (removed) audit(req, 'delete', 'category', id, { name: removed.name });
     res.json({ ok: true });
-  } catch {
-    res.status(500).json({ error: 'Error al eliminar' });
-  }
+  } catch (e) { next(e); }
 });
 
 module.exports = router;

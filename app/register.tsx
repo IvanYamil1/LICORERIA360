@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  View, Text, TextInput, TouchableOpacity, StyleSheet,
+  View, Text, TouchableOpacity, StyleSheet,
   ScrollView, KeyboardAvoidingView, Platform,
   StatusBar, Dimensions, Image,
 } from 'react-native';
@@ -9,9 +9,6 @@ import { useRouter } from 'expo-router';
 const { width } = Dimensions.get('window');
 
 export default function RegisterScreen() {
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [telefono, setTelefono] = useState('');
   const router = useRouter();
 
   const handleUnirse = () => {
@@ -49,31 +46,6 @@ export default function RegisterScreen() {
         />
 
         <View style={styles.form}>
-          <TextInput
-            style={styles.input}
-            placeholder="NOMBRE"
-            placeholderTextColor="#555555"
-            value={nombre}
-            onChangeText={setNombre}
-            autoCapitalize="words"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="APELLIDO"
-            placeholderTextColor="#555555"
-            value={apellido}
-            onChangeText={setApellido}
-            autoCapitalize="words"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="TELÉFONO"
-            placeholderTextColor="#555555"
-            value={telefono}
-            onChangeText={setTelefono}
-            keyboardType="phone-pad"
-          />
-
           <TouchableOpacity style={styles.btn} onPress={handleUnirse} activeOpacity={0.85}>
             <Text style={styles.btnText}>UNIRSE</Text>
           </TouchableOpacity>
@@ -117,15 +89,12 @@ const styles = StyleSheet.create({
     marginBottom: 28,
   },
 
-  form: { width: '100%', paddingHorizontal: 24, gap: 12 },
-  input: {
-    backgroundColor: '#ffffff',
-    borderRadius: 2,
-    paddingHorizontal: 16,
-    paddingVertical: 18,
-    fontSize: 13,
-    color: '#000000',
-    letterSpacing: 1.5,
+  form: {
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: 24,
+    gap: 12,
+    justifyContent: 'center',
   },
   btn: {
     backgroundColor: '#7a7820',

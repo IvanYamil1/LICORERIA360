@@ -37,7 +37,7 @@ export default function AdminDashboard() {
 
   return (
     <View style={s.root}>
-      <StatusBar barStyle="dark-content" backgroundColor={A.bg} />
+      <StatusBar barStyle="dark-content" backgroundColor={A.surface} />
 
       <View style={[s.brandBar, { paddingTop: insets.top + 12 }]}>
         <TouchableOpacity style={s.backBtn} onPress={() => router.replace('/(tabs)')} activeOpacity={0.7}>

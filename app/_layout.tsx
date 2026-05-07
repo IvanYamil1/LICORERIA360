@@ -11,12 +11,16 @@ export default function RootLayout() {
         <AuthProvider>
           <StatusBar style="light" backgroundColor="#000000" />
           <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="age-gate" />
             <Stack.Screen name="splash" />
             <Stack.Screen name="register" />
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
             <Stack.Screen name="product/[id]" />
             <Stack.Screen name="admin" />
+            <Stack.Screen name="legal/privacy" />
+            <Stack.Screen name="legal/terms" />
+            <Stack.Screen name="about" />
           </Stack>
         </AuthProvider>
       </SafeAreaProvider>

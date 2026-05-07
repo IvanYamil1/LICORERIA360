@@ -4,7 +4,7 @@ import {
   Dimensions, ActivityIndicator, RefreshControl, Platform, StatusBar, ScrollView,
 } from 'react-native';
 import { getCategories, getPromotions } from '../../src/services/api';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
@@ -44,12 +44,20 @@ export default function CategoriesScreen() {
   useEffect(() => { load(); }, []);
   const onRefresh = useCallback(() => { setRefreshing(true); load(); }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('light-content');
+      if (Platform.OS === 'android') StatusBar.setBackgroundColor('#0a1033');
+    }, []),
+  );
+
   return (
     <View style={styles.root}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <StatusBar barStyle="light-content" backgroundColor="#0a1033" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 120 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#fff" />}
       >
         {/* Banner superior */}
@@ -111,7 +119,6 @@ export default function CategoriesScreen() {
           </>
         )}
 
-        <View style={{ height: 40 }} />
       </ScrollView>
     </View>
   );
