@@ -1,23 +1,32 @@
 import { useEffect } from 'react';
-import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 import { registerDevice } from '../services/api';
 
-// Cómo se muestran las notificaciones cuando la app está en foreground
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  } as any),
-});
+// Push notifications no funcionan en Expo Go desde SDK 53.
+// Saltamos la importación entera de expo-notifications cuando estamos en Expo Go
+// para evitar errores en desarrollo. En el build real (standalone) sí carga.
+const isExpoGo = Constants.executionEnvironment === 'storeClient';
 
 export function usePushRegistration() {
   useEffect(() => {
+    if (isExpoGo) return;
+
     (async () => {
       try {
         if (!Device.isDevice) return; // simulador no soporta push reales
+
+        // Carga dinámica para que Expo Go ni siquiera importe el módulo
+        const Notifications = await import('expo-notifications');
+
+        Notifications.setNotificationHandler({
+          handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: false,
+          } as any),
+        });
 
         // Android requiere un canal de notificación
         if (Platform.OS === 'android') {

@@ -34,7 +34,8 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.INTERNET",
-        "android.permission.READ_EXTERNAL_STORAGE"
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -53,8 +54,10 @@
     "scheme": "licoreria369",
     "extra": {
       "eas": {
-        "projectId": ""
-      }
-    }
+        "projectId": "85ac8915-9b02-4ced-864e-51f4568cac57"
+      },
+      "router": {}
+    },
+    "owner": "ivanyhe"
   }
 }
