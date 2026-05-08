@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, StatusBar, Image,
   Dimensions, Platform,
@@ -14,12 +14,22 @@ export default function AgeGateScreen() {
   const router = useRouter();
   const [denied, setDenied] = useState(false);
 
+  // Si previamente dijo "no", muestra la pantalla de bloqueo de inmediato.
+  useEffect(() => {
+    AsyncStorage.getItem(AGE_GATE_KEY).then((v) => {
+      if (v === 'denied') setDenied(true);
+    });
+  }, []);
+
   const handleYes = async () => {
     await AsyncStorage.setItem(AGE_GATE_KEY, 'true');
     router.replace('/splash');
   };
 
-  const handleNo = () => setDenied(true);
+  const handleNo = async () => {
+    await AsyncStorage.setItem(AGE_GATE_KEY, 'denied');
+    setDenied(true);
+  };
 
   if (denied) {
     return (

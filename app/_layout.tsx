@@ -2,18 +2,25 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as Sentry from '@sentry/react-native';
 import { AuthProvider } from '../src/context/AuthContext';
 
-// Inicializa Sentry. Solo reporta errores si EXPO_PUBLIC_SENTRY_DSN está definido y no es dev.
+// Sentry: solo carga el SDK si hay DSN. Sin DSN no se importa el módulo
+// para que el build no requiera el plugin nativo ni token de upload.
 const SENTRY_DSN = process.env.EXPO_PUBLIC_SENTRY_DSN;
+let Sentry: any = null;
 if (SENTRY_DSN) {
-  Sentry.init({
-    dsn: SENTRY_DSN,
-    enabled: !__DEV__,
-    debug: false,
-    tracesSampleRate: 0.1,
-  });
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    Sentry = require('@sentry/react-native');
+    Sentry.init({
+      dsn: SENTRY_DSN,
+      enabled: !__DEV__,
+      debug: false,
+      tracesSampleRate: 0.1,
+    });
+  } catch {
+    Sentry = null;
+  }
 }
 
 function RootLayout() {
@@ -40,4 +47,4 @@ function RootLayout() {
 }
 
 // Envolver con Sentry para auto-captura de crashes y trace de navegación
-export default SENTRY_DSN ? Sentry.wrap(RootLayout) : RootLayout;
+export default Sentry ? Sentry.wrap(RootLayout) : RootLayout;

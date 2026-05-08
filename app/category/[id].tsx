@@ -133,6 +133,9 @@ export default function CategoryScreen() {
       <StatusBar barStyle="dark-content" backgroundColor={C.white} />
 
       <View style={styles.brandBar}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
+          <Text style={styles.backArrow}>‹</Text>
+        </TouchableOpacity>
         <Text style={styles.brandTitle}>Licoreria 369</Text>
       </View>
       <View style={styles.header}>
@@ -273,6 +276,18 @@ const styles = StyleSheet.create({
     minHeight: Platform.OS === 'android' ? 90 : 100,
   },
   brandTitle: { fontSize: 22, fontWeight: '800', color: C.text, letterSpacing: 0.2, textAlign: 'center' },
+  backBtn: {
+    position: 'absolute',
+    left: 14,
+    bottom: 12,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#111',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backArrow: { fontSize: 22, color: '#fff', fontWeight: '700', lineHeight: 24, marginTop: -2 },
 
   header: {
     flexDirection: 'row',

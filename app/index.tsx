@@ -9,6 +9,8 @@ export default function Root() {
 
   useEffect(() => {
     AsyncStorage.getItem(AGE_GATE_KEY).then((v) => {
+      // 'true' = pasó el gate. Cualquier otra cosa (null, 'denied') → vuelve al gate
+      // que ya sabe mostrar la pantalla de bloqueo si está 'denied'.
       setTarget(v === 'true' ? '/splash' : '/age-gate');
     });
   }, []);

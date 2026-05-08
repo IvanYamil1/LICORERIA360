@@ -1,20 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   ActivityIndicator, KeyboardAvoidingView, Platform, StatusBar,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../../src/context/AuthContext';
 import { A } from '../../src/theme/admin';
 import { loginAdmin } from '../../src/services/api';
 
+const REMEMBER_KEY = 'adminRememberedCreds';
+
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
   const router = useRouter();
+
+  // Cargar credenciales recordadas al abrir
+  useEffect(() => {
+    AsyncStorage.getItem(REMEMBER_KEY).then((raw) => {
+      if (!raw) return;
+      try {
+        const { u, p } = JSON.parse(raw);
+        if (u) setUsername(u);
+        if (p) setPassword(p);
+        setRemember(true);
+      } catch { /* ignorar */ }
+    });
+  }, []);
 
   const handleLogin = async () => {
     if (!username.trim() || !password) {
@@ -28,6 +46,15 @@ export default function LoginScreen() {
       if (!res.data?.token) {
         setError('Respuesta inválida del servidor');
         return;
+      }
+      // Guardar/borrar credenciales según el toggle ANTES de navegar
+      if (remember) {
+        await AsyncStorage.setItem(REMEMBER_KEY, JSON.stringify({
+          u: username.trim(),
+          p: password,
+        }));
+      } else {
+        await AsyncStorage.removeItem(REMEMBER_KEY);
       }
       await login(res.data.token);
       router.replace('/admin');
@@ -68,14 +95,36 @@ export default function LoginScreen() {
         />
 
         <Text style={s.label}>Contraseña</Text>
-        <TextInput
-          style={s.input}
-          placeholder="••••••••"
-          placeholderTextColor={A.muted}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <View style={s.passwordWrap}>
+          <TextInput
+            style={[s.input, { flex: 1, marginBottom: 0 }]}
+            placeholder="••••••••"
+            placeholderTextColor={A.muted}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TouchableOpacity
+            style={s.eyeBtn}
+            onPress={() => setShowPassword((v) => !v)}
+            activeOpacity={0.7}
+          >
+            <Text style={s.eyeText}>{showPassword ? 'Ocultar' : 'Mostrar'}</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={s.rememberRow}
+          onPress={() => setRemember((v) => !v)}
+          activeOpacity={0.7}
+        >
+          <View style={[s.checkbox, remember && s.checkboxChecked]}>
+            {remember ? <Text style={s.checkboxMark}>✓</Text> : null}
+          </View>
+          <Text style={s.rememberText}>Recordar mis credenciales</Text>
+        </TouchableOpacity>
 
         {error ? <Text style={s.errorText}>{error}</Text> : null}
 
@@ -133,6 +182,29 @@ const s = StyleSheet.create({
     fontSize: 15,
     marginBottom: 4,
   },
+  passwordWrap: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  eyeBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 14,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: A.border,
+    backgroundColor: A.surface,
+  },
+  eyeText: { fontSize: 12, fontWeight: '700', color: A.sub },
+
+  rememberRow: { flexDirection: 'row', alignItems: 'center', marginTop: 14, marginBottom: 4 },
+  checkbox: {
+    width: 22, height: 22, borderRadius: 5,
+    borderWidth: 2, borderColor: A.border,
+    backgroundColor: A.surface,
+    justifyContent: 'center', alignItems: 'center',
+    marginRight: 10,
+  },
+  checkboxChecked: { backgroundColor: A.primary, borderColor: A.primary },
+  checkboxMark: { color: '#fff', fontSize: 14, fontWeight: '900', lineHeight: 16 },
+  rememberText: { fontSize: 13, color: A.sub, fontWeight: '600' },
+
   btn: {
     backgroundColor: A.primary,
     borderRadius: 14,
