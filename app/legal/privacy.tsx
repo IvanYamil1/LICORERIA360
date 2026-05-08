@@ -23,53 +23,76 @@ export default function PrivacyScreen() {
         <Text style={s.h1}>1. Información que recopilamos</Text>
         <Text style={s.p}>
           Esta aplicación es un catálogo informativo de Licorería 369. No recopilamos
-          datos personales identificables como nombre, correo o teléfono de los usuarios
-          que solo navegan el catálogo.
+          nombre, correo, teléfono ni dirección de los usuarios que navegan el catálogo.
         </Text>
 
-        <Text style={s.h1}>2. Datos técnicos</Text>
+        <Text style={s.h1}>2. Datos almacenados localmente</Text>
         <Text style={s.p}>
-          Para el correcto funcionamiento podemos almacenar localmente en tu dispositivo:
-          confirmación de mayoría de edad, sesión de administrador (si aplica) y caché
-          de búsqueda. Estos datos no salen de tu dispositivo.
+          En tu dispositivo guardamos: confirmación de mayoría de edad, caché del
+          catálogo para que la app funcione más rápido y, solo si eres administrador,
+          tu sesión. Esta información no sale de tu dispositivo.
         </Text>
 
-        <Text style={s.h1}>3. Imágenes y contenido</Text>
+        <Text style={s.h1}>3. Notificaciones push</Text>
         <Text style={s.p}>
-          Las imágenes de productos se sirven desde Cloudinary. La aplicación no rastrea
-          tu comportamiento de navegación dentro del catálogo.
+          Si aceptas recibir notificaciones, almacenamos un identificador anónimo
+          (token de Expo) en nuestro servidor para enviarte avisos sobre nuevas ofertas.
+          Este token no contiene datos personales y puedes revocarlo desde los ajustes
+          de tu sistema operativo.
         </Text>
 
-        <Text style={s.h1}>4. Permisos del dispositivo</Text>
+        <Text style={s.h1}>4. Reportes de errores</Text>
         <Text style={s.p}>
-          Solo el panel de administración solicita acceso a la galería de fotos para
-          subir imágenes de productos. Los usuarios comunes no necesitan otorgar permisos.
+          Para mantener la aplicación estable utilizamos un servicio de reporte de
+          errores (Sentry). Cuando ocurre una falla técnica se envía información
+          anónima del incidente: tipo de error, modelo del dispositivo y versión del
+          sistema operativo. Sin nombre ni datos personales.
         </Text>
 
-        <Text style={s.h1}>5. Mayores de edad</Text>
+        <Text style={s.h1}>5. Imágenes</Text>
+        <Text style={s.p}>
+          Las imágenes de productos se sirven desde Cloudinary. La aplicación no
+          rastrea qué productos ves ni cuánto tiempo permaneces en cada pantalla.
+        </Text>
+
+        <Text style={s.h1}>6. Permisos del dispositivo</Text>
+        <Text style={s.p}>
+          - Notificaciones: opcional, solo si aceptas el aviso del sistema.{'\n'}
+          - Galería de fotos: solo el panel de administración la usa para subir
+          imágenes de productos. Los usuarios comunes no requieren ningún permiso.
+        </Text>
+
+        <Text style={s.h1}>7. Mayores de edad</Text>
         <Text style={s.p}>
           La aplicación está dirigida exclusivamente a personas mayores de 18 años. Al
           ingresar confirmaste tu mayoría de edad. No recopilamos información de
           personas menores de edad.
         </Text>
 
-        <Text style={s.h1}>6. Compartir datos con terceros</Text>
+        <Text style={s.h1}>8. Compartir datos con terceros</Text>
         <Text style={s.p}>
-          No compartimos datos con terceros con fines publicitarios. Los servicios
-          técnicos utilizados (Cloudinary, MongoDB Atlas, hosting del backend) almacenan
-          únicamente los datos del catálogo y registros operativos.
+          No vendemos ni compartimos datos con anunciantes. Los servicios técnicos que
+          utilizamos son: Cloudinary (imágenes), MongoDB Atlas (catálogo), Render
+          (hosting), Expo Push Notifications (avisos) y Sentry (reportes de errores).
+          Cada uno recibe únicamente los datos mínimos necesarios para su función.
         </Text>
 
-        <Text style={s.h1}>7. Cambios a esta política</Text>
+        <Text style={s.h1}>9. Eliminación de datos</Text>
+        <Text style={s.p}>
+          Como usuario común no creamos cuenta, por lo que no hay datos personales que
+          eliminar. Para borrar la caché local, desinstala la aplicación. Si eres
+          administrador y deseas eliminar tu cuenta, solicítalo en el establecimiento.
+        </Text>
+
+        <Text style={s.h1}>10. Cambios a esta política</Text>
         <Text style={s.p}>
           Podemos actualizar esta política. Si lo hacemos, la versión vigente estará
           siempre disponible dentro de la aplicación.
         </Text>
 
-        <Text style={s.h1}>8. Contacto</Text>
+        <Text style={s.h1}>11. Contacto</Text>
         <Text style={s.p}>
-          Para preguntas sobre privacidad, escríbenos a:{'\n'}
-          <Text style={s.bold}>contacto@licoreria369.com</Text>
+          Para preguntas sobre privacidad, acércate al establecimiento.
         </Text>
 
         <View style={{ height: 40 }} />

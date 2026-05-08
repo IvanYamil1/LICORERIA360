@@ -37,6 +37,14 @@ api.interceptors.request.use(async (config) => {
 // Auth
 export const loginAdmin = (username: string, password: string) =>
   api.post('/auth/login', { username, password });
+export const changePassword = (currentPassword: string, newPassword: string) =>
+  api.post('/auth/change-password', { currentPassword, newPassword });
+export const getAdmins = () => api.get('/auth/admins');
+export const createAdmin = (username: string, password: string) =>
+  api.post('/auth/admins', { username, password });
+export const deleteAdmin = (id: string) => api.delete(`/auth/admins/${id}`);
+export const deleteMyAccount = (password: string) =>
+  api.post('/auth/me/delete', { password });
 
 // Categories
 export const getCategories = () => api.get('/categories');
@@ -56,6 +64,13 @@ export const createProduct = (data: FormData) =>
 export const updateProduct = (id: string, data: FormData) =>
   api.put(`/products/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const deleteProduct = (id: string) => api.delete(`/products/${id}`);
+
+// Notifications
+export const registerDevice = (token: string, platform: 'ios' | 'android' | 'web') =>
+  api.post('/notifications/register', { token, platform });
+export const getDeviceCount = () => api.get('/notifications/devices');
+export const sendPushNotification = (title: string, body: string) =>
+  api.post('/notifications/send', { title, body });
 
 // Promotions
 export const getPromotions = () => api.get('/promotions');

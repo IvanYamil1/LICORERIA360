@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Image, TouchableOpacity,
-  Dimensions, Platform, StatusBar, ActivityIndicator, RefreshControl,
+  Dimensions, Platform, StatusBar, RefreshControl,
   TextInput,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { getPromotions, getProducts } from '../../src/services/api';
+import { useCachedFetch } from '../../src/hooks/useCachedFetch';
+import { ErrorState, EmptyState, PromoListSkeleton } from '../../src/components/StateView';
 
 const { width } = Dimensions.get('window');
 const GRID_PAD = 14;
@@ -163,13 +165,24 @@ function normalize(s: string) {
 const SECRET_TAPS = 5;
 const SECRET_WINDOW_MS = 2500;
 
+type HomePayload = {
+  promotions: Promotion[];
+  products: SearchProduct[];
+};
+
+const fetchHomePayload = async (): Promise<HomePayload> => {
+  const [promRes, prodRes] = await Promise.all([getPromotions(), getProducts()]);
+  return {
+    promotions: (promRes.data || []) as Promotion[],
+    products: (prodRes.data || []) as SearchProduct[],
+  };
+};
+
 export default function HomeScreen() {
   const router = useRouter();
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
-  const [products, setProducts] = useState<SearchProduct[]>([]);
+  const { data, loading, refreshing, error, reload } =
+    useCachedFetch<HomePayload>('home-screen', fetchHomePayload);
   const [query, setQuery] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const tapCountRef = useRef(0);
   const lastTapRef = useRef(0);
 
@@ -187,22 +200,8 @@ export default function HomeScreen() {
     }
   };
 
-  const load = async () => {
-    try {
-      const [promRes, prodRes] = await Promise.all([getPromotions(), getProducts()]);
-      setPromotions((promRes.data || []) as Promotion[]);
-      setProducts((prodRes.data || []) as SearchProduct[]);
-    } catch {
-      setPromotions([]);
-      setProducts([]);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => { load(); }, []);
-  const onRefresh = useCallback(() => { setRefreshing(true); load(); }, []);
+  const promotions = data?.promotions || [];
+  const products = data?.products || [];
 
   useFocusEffect(
     useCallback(() => {
@@ -238,7 +237,7 @@ export default function HomeScreen() {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={C.olive} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={reload} tintColor={C.olive} />}
       >
         {heroPromos.map((p) => (
           p.image ? (
@@ -311,15 +310,18 @@ export default function HomeScreen() {
         {!searching && <Text style={s.secTitle}>Explora nuestras opciones</Text>}
 
         {!searching && (loading ? (
-          <View style={s.loadingWrap}>
-            <ActivityIndicator size="large" color={C.olive} />
-          </View>
+          <PromoListSkeleton />
+        ) : error && !data ? (
+          <ErrorState
+            message="No se pudieron cargar las promociones. Revisa tu conexión."
+            onRetry={reload}
+          />
         ) : contentPromos.length === 0 && heroPromos.length === 0 && footerPromos.length === 0 ? (
-          <View style={s.empty}>
-            <Text style={{ fontSize: 52 }}>🍾</Text>
-            <Text style={s.emptyTitle}>Sin promociones todavía</Text>
-            <Text style={s.emptySub}>Agrega promociones desde el panel de admin</Text>
-          </View>
+          <EmptyState
+            icon="🍾"
+            title="Sin promociones todavía"
+            description="Agrega promociones desde el panel de admin"
+          />
         ) : (
           <View style={s.grid}>
             {rows.map((row, i) => {
@@ -364,7 +366,7 @@ export default function HomeScreen() {
             onPress={() => router.push('/about')}
             activeOpacity={0.7}
           >
-            <Text style={s.aboutLinkText}>Contacto · Política · Términos</Text>
+            <Text style={s.aboutLinkText}>Política · Términos · Versión</Text>
           </TouchableOpacity>
         )}
 

@@ -36,7 +36,7 @@ export default function RegisterScreen() {
         </View>
 
         <Text style={styles.tagline}>
-          Regístrate para ver <Text style={styles.taglineBold}>nuestras ofertas</Text>
+          Descubre <Text style={styles.taglineBold}>nuestras ofertas</Text>
         </Text>
 
         <Image

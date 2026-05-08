@@ -2,9 +2,21 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as Sentry from '@sentry/react-native';
 import { AuthProvider } from '../src/context/AuthContext';
 
-export default function RootLayout() {
+// Inicializa Sentry. Solo reporta errores si EXPO_PUBLIC_SENTRY_DSN está definido y no es dev.
+const SENTRY_DSN = process.env.EXPO_PUBLIC_SENTRY_DSN;
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    enabled: !__DEV__,
+    debug: false,
+    tracesSampleRate: 0.1,
+  });
+}
+
+function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
@@ -16,7 +28,6 @@ export default function RootLayout() {
             <Stack.Screen name="register" />
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
-            <Stack.Screen name="product/[id]" />
             <Stack.Screen name="admin" />
             <Stack.Screen name="legal/privacy" />
             <Stack.Screen name="legal/terms" />
@@ -27,3 +38,6 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+// Envolver con Sentry para auto-captura de crashes y trace de navegación
+export default SENTRY_DSN ? Sentry.wrap(RootLayout) : RootLayout;

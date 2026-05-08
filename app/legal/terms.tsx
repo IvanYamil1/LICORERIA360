@@ -75,8 +75,7 @@ export default function TermsScreen() {
 
         <Text style={s.h1}>9. Contacto</Text>
         <Text style={s.p}>
-          Para dudas sobre estos términos:{'\n'}
-          <Text style={s.bold}>contacto@licoreria369.com</Text>
+          Para dudas sobre estos términos, acércate al establecimiento.
         </Text>
 
         <View style={{ height: 40 }} />

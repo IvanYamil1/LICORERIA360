@@ -47,7 +47,8 @@
         {
           "photosPermission": "Solo el panel de administración usa fotos para subir imágenes de productos."
         }
-      ]
+      ],
+      "@sentry/react-native"
     ],
     "scheme": "licoreria369",
     "extra": {

@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
-  View, Text, StyleSheet, FlatList, Image, TouchableOpacity,
-  Dimensions, ActivityIndicator, RefreshControl, Platform, StatusBar, ScrollView,
+  View, Text, StyleSheet, Image, TouchableOpacity,
+  Dimensions, RefreshControl, Platform, StatusBar, ScrollView,
 } from 'react-native';
 import { getCategories, getPromotions } from '../../src/services/api';
 import { useRouter, useFocusEffect } from 'expo-router';
+import { useCachedFetch } from '../../src/hooks/useCachedFetch';
+import { ErrorState, EmptyState, CategoryGridSkeleton } from '../../src/components/StateView';
 
 const { width } = Dimensions.get('window');
 
@@ -22,27 +24,26 @@ const H_PAD = 22;
 const COL_GAP = 16;
 const CELL = (width - H_PAD * 2 - COL_GAP * 3) / 4;
 
-export default function CategoriesScreen() {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [banner, setBanner] = useState<string | null>(null);
-  const [offerBadge, setOfferBadge] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const router = useRouter();
+type CategoriesPayload = {
+  categories: any[];
+  banner: string | null;
+  offerBadge: string | null;
+};
 
-  const load = async () => {
-    try {
-      const [catsRes, promosRes] = await Promise.all([getCategories(), getPromotions()]);
-      setCategories(catsRes.data || []);
-      const promos = promosRes.data || [];
-      setBanner(promos.find((p: any) => p.type === 'categories-banner')?.image || null);
-      setOfferBadge(promos.find((p: any) => p.type === 'offer-badge')?.image || null);
-    } catch {}
-    finally { setLoading(false); setRefreshing(false); }
+const fetchCategoriesPayload = async (): Promise<CategoriesPayload> => {
+  const [catsRes, promosRes] = await Promise.all([getCategories(), getPromotions()]);
+  const promos = promosRes.data || [];
+  return {
+    categories: catsRes.data || [],
+    banner: promos.find((p: any) => p.type === 'categories-banner')?.image || null,
+    offerBadge: promos.find((p: any) => p.type === 'offer-badge')?.image || null,
   };
+};
 
-  useEffect(() => { load(); }, []);
-  const onRefresh = useCallback(() => { setRefreshing(true); load(); }, []);
+export default function CategoriesScreen() {
+  const router = useRouter();
+  const { data, loading, refreshing, error, reload } =
+    useCachedFetch<CategoriesPayload>('categories-screen', fetchCategoriesPayload);
 
   useFocusEffect(
     useCallback(() => {
@@ -51,6 +52,10 @@ export default function CategoriesScreen() {
     }, []),
   );
 
+  const categories = data?.categories || [];
+  const banner = data?.banner || null;
+  const offerBadge = data?.offerBadge || null;
+
   return (
     <View style={styles.root}>
       <StatusBar barStyle="light-content" backgroundColor="#0a1033" />
@@ -58,7 +63,7 @@ export default function CategoriesScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 120 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#fff" />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={reload} tintColor="#fff" />}
       >
         {/* Banner superior */}
         <View style={styles.hero}>
@@ -68,15 +73,18 @@ export default function CategoriesScreen() {
         </View>
 
         {loading ? (
-          <View style={styles.loading}>
-            <ActivityIndicator size="large" color="#fff" />
-          </View>
+          <CategoryGridSkeleton />
+        ) : error && !data ? (
+          <ErrorState
+            message="No se pudo cargar el catálogo. Revisa tu conexión."
+            onRetry={reload}
+          />
         ) : categories.length === 0 ? (
-          <View style={styles.empty}>
-            <Text style={{ fontSize: 52 }}>🍶</Text>
-            <Text style={styles.emptyTitle}>Sin categorías aún</Text>
-            <Text style={styles.emptySub}>Agrégalas desde el panel de admin</Text>
-          </View>
+          <EmptyState
+            icon="🍶"
+            title="Sin categorías aún"
+            description="Agrégalas desde el panel de admin"
+          />
         ) : (
           <>
             {/* Grid */}

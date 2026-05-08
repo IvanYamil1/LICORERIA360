@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View, Text, StyleSheet, Image, TouchableOpacity, ScrollView,
-  ActivityIndicator, Dimensions, Platform, StatusBar,
+  Dimensions, Platform, StatusBar, RefreshControl,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { getProductsByCategory, getCategory, getCategories } from '../../src/services/api';
+import { useCachedFetch } from '../../src/hooks/useCachedFetch';
+import { ErrorState, EmptyState, ProductGridSkeleton } from '../../src/components/StateView';
 
 const { width } = Dimensions.get('window');
 const H_PAD = 16;
@@ -65,17 +67,41 @@ function buildRows(products: Product[]): Row[] {
   return rows;
 }
 
+type CategoryPayload = {
+  category: Category | null;
+  products: Product[];
+  allCategories: { _id: string; name: string }[];
+};
+
 export default function CategoryScreen() {
   const { id, name } = useLocalSearchParams<{ id: string; name: string }>();
-  const [category, setCategory] = useState<Category | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [allCategories, setAllCategories] = useState<{ _id: string; name: string }[]>([]);
-  const [loading, setLoading] = useState(true);
-  // Aspect ratios for featured (cols=1) products, indexed by product id.
-  const [aspects, setAspects] = useState<Record<string, number>>({});
   const router = useRouter();
+  const [aspects, setAspects] = useState<Record<string, number>>({});
 
-  // Measure aspect ratios for featured products via Image.getSize
+  const fetchCategoryData = useMemo(
+    () => async (): Promise<CategoryPayload> => {
+      const [catRes, prodRes, catsRes] = await Promise.all([
+        getCategory(id),
+        getProductsByCategory(id),
+        getCategories(),
+      ]);
+      return {
+        category: catRes.data,
+        products: prodRes.data || [],
+        allCategories: catsRes.data || [],
+      };
+    },
+    [id],
+  );
+
+  const { data, loading, refreshing, error, reload } =
+    useCachedFetch<CategoryPayload>(`category-${id}`, fetchCategoryData);
+
+  const category = data?.category || null;
+  const products = data?.products || [];
+  const allCategories = data?.allCategories || [];
+
+  // Measure aspect ratios for featured (cols=1) products via Image.getSize
   useEffect(() => {
     products
       .filter((p) => p.colsInRow === 1 && p.image && !aspects[p._id])
@@ -89,22 +115,8 @@ export default function CategoryScreen() {
         );
       });
   }, [products]);
-  const title = name ? decodeURIComponent(name) : (category?.name || 'Productos');
 
-  useEffect(() => {
-    Promise.all([
-      getCategory(id),
-      getProductsByCategory(id),
-      getCategories(),
-    ])
-      .then(([catRes, prodRes, catsRes]) => {
-        setCategory(catRes.data);
-        setProducts(prodRes.data || []);
-        setAllCategories(catsRes.data || []);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [id]);
+  const title = name ? decodeURIComponent(name) : (category?.name || 'Productos');
 
   const goSibling = (delta: number) => {
     const idx = allCategories.findIndex((c) => c._id === id);
@@ -113,10 +125,6 @@ export default function CategoryScreen() {
     const next = allCategories[nextIdx];
     router.replace(`/category/${next._id}?name=${encodeURIComponent(next.name)}`);
   };
-
-  if (loading) {
-    return <View style={styles.center}><ActivityIndicator size="large" color={C.text} /></View>;
-  }
 
   const rows = buildRows(products);
 
@@ -137,19 +145,30 @@ export default function CategoryScreen() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={reload} tintColor={C.text} />}
+      >
         {category?.headerImage ? (
           <View style={styles.bannerWrap}>
             <Image source={{ uri: category.headerImage }} style={styles.banner} resizeMode="cover" />
           </View>
         ) : null}
 
-        {products.length === 0 ? (
-          <View style={styles.empty}>
-            <Text style={{ fontSize: 52 }}>🍾</Text>
-            <Text style={styles.emptyTitle}>Sin productos</Text>
-            <Text style={styles.emptyDesc}>Esta categoría aún no tiene productos.</Text>
-          </View>
+        {loading ? (
+          <ProductGridSkeleton rows={4} cols={3} />
+        ) : error && !data ? (
+          <ErrorState
+            message="No se pudo cargar la categoría. Revisa tu conexión."
+            onRetry={reload}
+          />
+        ) : products.length === 0 ? (
+          <EmptyState
+            icon="🍾"
+            title="Sin productos"
+            description="Esta categoría aún no tiene productos."
+          />
         ) : (
           <View style={styles.grid}>
             {rows.map((row, i) => {

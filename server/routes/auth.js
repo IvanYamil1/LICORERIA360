@@ -3,6 +3,14 @@ const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
 const Admin = require('../models/Admin');
 const AuditLog = require('../models/AuditLog');
+const authMiddleware = require('../middleware/auth');
+const audit = require('../middleware/audit');
+const { strField, objectIdParam } = require('../middleware/validators');
+
+const MIN_PASSWORD = 8;
+const MAX_PASSWORD = 64;
+const MIN_USERNAME = 3;
+const MAX_USERNAME = 30;
 
 const MAX_FAILED = 5;
 const LOCK_MINUTES = 15;
@@ -70,6 +78,95 @@ router.post('/login', loginLimiter, async (req, res) => {
   } catch {
     res.status(500).json({ error: 'Error del servidor' });
   }
+});
+
+// === Cambio de contraseña del admin actualmente logueado ===
+router.post('/change-password', authMiddleware, async (req, res, next) => {
+  try {
+    const currentPassword = strField(req.body?.currentPassword, 'currentPassword', { required: true });
+    const newPassword = strField(req.body?.newPassword, 'newPassword',
+      { required: true, min: MIN_PASSWORD, max: MAX_PASSWORD });
+
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) return res.status(404).json({ error: 'Admin no encontrado' });
+
+    const ok = await admin.comparePassword(currentPassword);
+    if (!ok) return res.status(401).json({ error: 'Contraseña actual incorrecta' });
+
+    admin.password = newPassword;
+    await admin.save();
+    audit(req, 'change_password', 'admin', admin._id, {});
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+// === CRUD de admins (requiere estar logueado) ===
+
+router.get('/admins', authMiddleware, async (req, res, next) => {
+  try {
+    const admins = await Admin.find({}, '-password').sort({ createdAt: 1 });
+    res.json(admins);
+  } catch (e) { next(e); }
+});
+
+router.post('/admins', authMiddleware, async (req, res, next) => {
+  try {
+    const username = strField(req.body?.username, 'username',
+      { required: true, min: MIN_USERNAME, max: MAX_USERNAME });
+    const password = strField(req.body?.password, 'password',
+      { required: true, min: MIN_PASSWORD, max: MAX_PASSWORD });
+
+    if (!/^[a-zA-Z0-9_.-]+$/.test(username)) {
+      return res.status(400).json({ error: 'Usuario solo permite letras, números, _ . -' });
+    }
+
+    const exists = await Admin.findOne({ username });
+    if (exists) return res.status(409).json({ error: 'Ese usuario ya existe' });
+
+    const created = await Admin.create({ username, password });
+    audit(req, 'create', 'admin', created._id, { username });
+    res.status(201).json({ _id: created._id, username: created.username });
+  } catch (e) { next(e); }
+});
+
+router.delete('/admins/:id', authMiddleware, async (req, res, next) => {
+  try {
+    const id = objectIdParam(req);
+    if (String(id) === String(req.admin.id)) {
+      return res.status(400).json({ error: 'No puedes eliminarte a ti mismo' });
+    }
+    const total = await Admin.countDocuments();
+    if (total <= 1) {
+      return res.status(400).json({ error: 'Debe quedar al menos un admin' });
+    }
+    const removed = await Admin.findByIdAndDelete(id);
+    if (removed) audit(req, 'delete', 'admin', id, { username: removed.username });
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+// Eliminar mi propia cuenta admin (cumple requisito de Apple/Google de account deletion)
+// Requiere contraseña actual y que existan al menos 2 admins.
+router.post('/me/delete', authMiddleware, async (req, res, next) => {
+  try {
+    const password = strField(req.body?.password, 'password', { required: true });
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) return res.status(404).json({ error: 'Admin no encontrado' });
+
+    const ok = await admin.comparePassword(password);
+    if (!ok) return res.status(401).json({ error: 'Contraseña incorrecta' });
+
+    const total = await Admin.countDocuments();
+    if (total <= 1) {
+      return res.status(400).json({
+        error: 'Eres el único admin. Crea otro admin antes de eliminar tu cuenta.',
+      });
+    }
+
+    await Admin.findByIdAndDelete(admin._id);
+    audit(req, 'delete_self', 'admin', admin._id, { username: admin.username });
+    res.json({ ok: true });
+  } catch (e) { next(e); }
 });
 
 module.exports = router;

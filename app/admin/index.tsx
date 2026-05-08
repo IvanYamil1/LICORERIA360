@@ -9,10 +9,12 @@ import { useAuth } from '../../src/context/AuthContext';
 import { A } from '../../src/theme/admin';
 
 const MENU = [
-  { label: 'Categorías',  desc: 'Administra las categorías de productos',     route: '/admin/categories' },
-  { label: 'Productos',   desc: 'Agrega, edita o elimina productos',          route: '/admin/products' },
-  { label: 'Promociones', desc: 'Gestiona ofertas (normal y principal)',       route: '/admin/promotions' },
-  { label: 'Banners',     desc: 'Imágenes fijas: hero, footer, badge OFERTA',  route: '/admin/banners' },
+  { label: 'Categorías',     desc: 'Administra las categorías de productos',         route: '/admin/categories' },
+  { label: 'Productos',      desc: 'Agrega, edita o elimina productos',              route: '/admin/products' },
+  { label: 'Promociones',    desc: 'Gestiona ofertas (normal y principal)',           route: '/admin/promotions' },
+  { label: 'Banners',        desc: 'Imágenes fijas: hero, footer, badge OFERTA',      route: '/admin/banners' },
+  { label: 'Notificaciones', desc: 'Envía push notifications a tus usuarios',         route: '/admin/notifications' },
+  { label: 'Usuarios',       desc: 'Crear admins y cambiar tu contraseña',            route: '/admin/users' },
 ];
 
 export default function AdminDashboard() {

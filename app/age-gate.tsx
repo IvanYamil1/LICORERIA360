@@ -67,6 +67,16 @@ export default function AgeGateScreen() {
         </TouchableOpacity>
       </View>
 
+      <View style={s.legalRow}>
+        <TouchableOpacity onPress={() => router.push('/legal/privacy')} activeOpacity={0.7}>
+          <Text style={s.legalLink}>Política de Privacidad</Text>
+        </TouchableOpacity>
+        <Text style={s.legalSep}>·</Text>
+        <TouchableOpacity onPress={() => router.push('/legal/terms')} activeOpacity={0.7}>
+          <Text style={s.legalLink}>Términos</Text>
+        </TouchableOpacity>
+      </View>
+
       <Text style={s.disclaimer}>
         El consumo excesivo de alcohol es nocivo para la salud.
       </Text>
@@ -125,6 +135,9 @@ const s = StyleSheet.create({
   btnNoText: { color: '#aaa', fontSize: 14, fontWeight: '700', letterSpacing: 2 },
   btnYes: { backgroundColor: '#7a7820' },
   btnYesText: { color: '#fff', fontSize: 14, fontWeight: '800', letterSpacing: 2 },
+  legalRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 18, gap: 10 },
+  legalLink: { color: '#7a7820', fontSize: 12, fontWeight: '600', textDecorationLine: 'underline' },
+  legalSep: { color: '#555', fontSize: 12 },
   disclaimer: {
     color: '#888',
     fontSize: 11,

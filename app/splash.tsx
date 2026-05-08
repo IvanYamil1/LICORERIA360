@@ -31,7 +31,7 @@ export default function SplashScreen() {
         onPress={() => router.replace('/register')}
         activeOpacity={0.75}
       >
-        <Text style={styles.startText}>Start</Text>
+        <Text style={styles.startText}>Comenzar</Text>
       </TouchableOpacity>
     </View>
   );

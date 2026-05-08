@@ -3,10 +3,12 @@ import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeIcon, GridIcon, PersonIcon } from '../../src/components/TabIcons';
 import { useAuth } from '../../src/context/AuthContext';
+import { usePushRegistration } from '../../src/hooks/usePushRegistration';
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
   const { isAdmin } = useAuth();
+  usePushRegistration(); // se registra solo al entrar a las tabs (después del age gate)
   const baseHeight = 56;
 
   return (

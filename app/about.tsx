@@ -1,37 +1,15 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar, Linking,
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 
-// Ajusta estos valores con los datos reales del negocio
-const CONTACT = {
-  whatsapp: '525555555555', // sin + ni espacios, formato internacional
-  phone:    '+52 55 5555 5555',
-  email:    'contacto@licoreria369.com',
-  address:  'Dirección de la licorería, Ciudad, Estado',
-  hours:    'Lun-Dom 10:00 - 22:00',
-};
-
 export default function AboutScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const version = Constants.expoConfig?.version || '1.0.0';
-
-  const openWhatsApp = () => {
-    Linking.openURL(`https://wa.me/${CONTACT.whatsapp}`).catch(() => {});
-  };
-  const callPhone = () => {
-    Linking.openURL(`tel:${CONTACT.phone.replace(/\s/g, '')}`).catch(() => {});
-  };
-  const sendEmail = () => {
-    Linking.openURL(`mailto:${CONTACT.email}`).catch(() => {});
-  };
-  const openMaps = () => {
-    Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`).catch(() => {});
-  };
 
   return (
     <View style={s.root}>
@@ -43,29 +21,6 @@ export default function AboutScreen() {
         <Text style={s.brandTitle}>Acerca de</Text>
       </View>
       <ScrollView contentContainerStyle={s.scroll}>
-        <Text style={s.section}>CONTACTO</Text>
-
-        <TouchableOpacity style={s.row} onPress={openWhatsApp} activeOpacity={0.75}>
-          <Text style={s.rowLabel}>WhatsApp</Text>
-          <Text style={s.rowValue}>{CONTACT.phone} ›</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={s.row} onPress={callPhone} activeOpacity={0.75}>
-          <Text style={s.rowLabel}>Teléfono</Text>
-          <Text style={s.rowValue}>{CONTACT.phone} ›</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={s.row} onPress={sendEmail} activeOpacity={0.75}>
-          <Text style={s.rowLabel}>Correo</Text>
-          <Text style={s.rowValue}>{CONTACT.email} ›</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={s.row} onPress={openMaps} activeOpacity={0.75}>
-          <Text style={s.rowLabel}>Dirección</Text>
-          <Text style={s.rowValue}>Ver en mapa ›</Text>
-        </TouchableOpacity>
-        <View style={s.row}>
-          <Text style={s.rowLabel}>Horario</Text>
-          <Text style={s.rowValue}>{CONTACT.hours}</Text>
-        </View>
-
         <Text style={s.section}>LEGAL</Text>
         <TouchableOpacity style={s.row} onPress={() => router.push('/legal/privacy')} activeOpacity={0.75}>
           <Text style={s.rowLabel}>Política de Privacidad</Text>
