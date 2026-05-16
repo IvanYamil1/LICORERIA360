@@ -41,6 +41,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const id = objectIdParam(req);
+    const product = await Product.findById(id).populate('category', 'name');
+    if (!product) return res.status(404).json({ error: 'Producto no encontrado' });
+    res.json(product);
+  } catch (e) { next(e); }
+});
+
 router.post('/', authMiddleware, upload.single('image'), async (req, res, next) => {
   try {
     const data = sanitizeBody(req.body);

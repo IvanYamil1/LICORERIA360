@@ -28,6 +28,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const id = objectIdParam(req);
+    const promotion = await Promotion.findById(id);
+    if (!promotion) return res.status(404).json({ error: 'Promoción no encontrada' });
+    res.json(promotion);
+  } catch (e) { next(e); }
+});
+
 router.post('/', authMiddleware, upload.single('image'), async (req, res, next) => {
   try {
     const data = sanitizeBody(req.body);
