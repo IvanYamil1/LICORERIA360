@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider } from '../src/context/AuthContext';
+import { FavoritesProvider } from '../src/context/FavoritesContext';
 
 // Sentry: solo carga el SDK si hay DSN. Sin DSN no se importa el módulo
 // para que el build no requiera el plugin nativo ni token de upload.
@@ -28,18 +29,22 @@ function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <AuthProvider>
-          <StatusBar style="light" backgroundColor="#000000" />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="age-gate" />
-            <Stack.Screen name="splash" />
-            <Stack.Screen name="register" />
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
-            <Stack.Screen name="admin" />
-            <Stack.Screen name="legal/privacy" />
-            <Stack.Screen name="legal/terms" />
-            <Stack.Screen name="about" />
-          </Stack>
+          <FavoritesProvider>
+            <StatusBar style="light" backgroundColor="#000000" />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="age-gate" />
+              <Stack.Screen name="splash" />
+              <Stack.Screen name="register" />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="product/[id]" />
+              <Stack.Screen name="promotion/[id]" />
+              <Stack.Screen name="admin" />
+              <Stack.Screen name="legal/privacy" />
+              <Stack.Screen name="legal/terms" />
+              <Stack.Screen name="about" />
+            </Stack>
+          </FavoritesProvider>
         </AuthProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

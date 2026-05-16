@@ -70,7 +70,7 @@ function buildRows(promos: Promotion[]): Row[] {
   return rows;
 }
 
-function PromoCard({ p, w, full }: { p: Promotion; w: number; full?: boolean }) {
+function PromoCard({ p, w, full, onPress }: { p: Promotion; w: number; full?: boolean; onPress?: () => void }) {
   const imgH = full ? w * 0.55 : w * 1.1;
   const [aspect, setAspect] = useState<number | null>(null);
 
@@ -124,7 +124,7 @@ function PromoCard({ p, w, full }: { p: Promotion; w: number; full?: boolean }) 
   );
 
   return (
-    <TouchableOpacity style={{ width: w }} activeOpacity={0.85}>
+    <TouchableOpacity style={{ width: w }} activeOpacity={0.85} onPress={onPress}>
       {full ? (
         <>
           {imgBlock}
@@ -272,16 +272,13 @@ export default function HomeScreen() {
               <Text style={s.noResults}>Sin resultados para "{query}"</Text>
             ) : (
               results.map((p) => {
-                const catId = typeof p.category === 'object' ? p.category?._id : p.category;
                 const catName = typeof p.category === 'object' ? p.category?.name : '';
                 return (
                   <TouchableOpacity
                     key={p._id}
                     style={s.resultItem}
                     activeOpacity={0.75}
-                    onPress={() => {
-                      if (catId) router.push(`/category/${catId}?name=${encodeURIComponent(catName || '')}`);
-                    }}
+                    onPress={() => router.push(`/product/${p._id}`)}
                   >
                     <View style={s.resultImgWrap}>
                       {p.image ? (
@@ -325,24 +322,25 @@ export default function HomeScreen() {
         ) : (
           <View style={s.grid}>
             {rows.map((row, i) => {
+              const goTo = (id: string) => router.push(`/promotion/${id}`);
               if (row.type === 'full') {
                 return (
                   <View key={i} style={s.rowFull}>
-                    <PromoCard p={row.items[0]} w={FULL_W} full />
+                    <PromoCard p={row.items[0]} w={FULL_W} full onPress={() => goTo(row.items[0]._id)} />
                   </View>
                 );
               }
               if (row.type === 'pair') {
                 return (
                   <View key={i} style={s.rowPair}>
-                    <PromoCard p={row.items[0]} w={HALF_W} />
-                    <PromoCard p={row.items[1]} w={HALF_W} />
+                    <PromoCard p={row.items[0]} w={HALF_W} onPress={() => goTo(row.items[0]._id)} />
+                    <PromoCard p={row.items[1]} w={HALF_W} onPress={() => goTo(row.items[1]._id)} />
                   </View>
                 );
               }
               return (
                 <View key={i} style={s.rowCenter}>
-                  <PromoCard p={row.items[0]} w={HALF_W} />
+                  <PromoCard p={row.items[0]} w={HALF_W} onPress={() => goTo(row.items[0]._id)} />
                 </View>
               );
             })}

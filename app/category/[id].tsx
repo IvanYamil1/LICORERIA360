@@ -200,9 +200,11 @@ export default function CategoryScreen() {
                   ]}
                 >
                   {row.items.map((p) => (
-                    <View
+                    <TouchableOpacity
                       key={p._id}
                       style={[styles.card, { width: cardW }]}
+                      activeOpacity={0.75}
+                      onPress={() => router.push(`/product/${p._id}`)}
                     >
                       {isFeatured ? (
                         p.image ? (
@@ -237,7 +239,7 @@ export default function CategoryScreen() {
                           <Text style={styles.cardPrice}>${p.price}</Text>
                         ) : null}
                       </View>
-                    </View>
+                    </TouchableOpacity>
                   ))}
                   {/* fill remaining slots so cards don't stretch (skip when centered) */}
                   {!centerRow && Array.from({ length: sizingCols - row.items.length }).map((_, idx) => (

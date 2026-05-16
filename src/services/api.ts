@@ -57,6 +57,7 @@ export const deleteCategory = (id: string) => api.delete(`/categories/${id}`);
 
 // Products
 export const getProducts = () => api.get('/products');
+export const getProduct = (id: string) => api.get(`/products/${id}`);
 export const getProductsByCategory = (categoryId: string) =>
   api.get(`/products?category=${categoryId}`);
 export const createProduct = (data: FormData) =>
@@ -64,6 +65,8 @@ export const createProduct = (data: FormData) =>
 export const updateProduct = (id: string, data: FormData) =>
   api.put(`/products/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const deleteProduct = (id: string) => api.delete(`/products/${id}`);
+
+export const getPromotion = (id: string) => api.get(`/promotions/${id}`);
 
 // Notifications
 export const registerDevice = (token: string, platform: 'ios' | 'android' | 'web') =>

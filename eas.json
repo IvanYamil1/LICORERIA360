@@ -20,7 +20,8 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://licoreria369-api.onrender.com/api"
+        "EXPO_PUBLIC_API_URL": "https://licoreria369-api.onrender.com/api",
+        "EXPO_PUBLIC_WHATSAPP_NUMBER": "523328284916"
       }
     },
     "production": {
@@ -29,7 +30,8 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://licoreria369-api.onrender.com/api"
+        "EXPO_PUBLIC_API_URL": "https://licoreria369-api.onrender.com/api",
+        "EXPO_PUBLIC_WHATSAPP_NUMBER": "523328284916"
       }
     }
   },

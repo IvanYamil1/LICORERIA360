@@ -1,7 +1,7 @@
 import { Tabs, router } from 'expo-router';
 import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HomeIcon, GridIcon, PersonIcon } from '../../src/components/TabIcons';
+import { HomeIcon, GridIcon, HeartIcon, PersonIcon } from '../../src/components/TabIcons';
 import { useAuth } from '../../src/context/AuthContext';
 import { usePushRegistration } from '../../src/hooks/usePushRegistration';
 
@@ -49,6 +49,13 @@ export default function TabsLayout() {
         options={{
           tabBarLabel: 'Productos',
           tabBarIcon: ({ focused }) => <GridIcon focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
+        name="favorites"
+        options={{
+          tabBarLabel: 'Favoritos',
+          tabBarIcon: ({ focused }) => <HeartIcon focused={focused} />,
         }}
       />
       <Tabs.Screen

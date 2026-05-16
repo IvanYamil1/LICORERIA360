@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 const ACT = '#111111';
 const INACT = '#bbbbbb';
@@ -35,6 +35,17 @@ export function GridIcon({ focused }: P) {
         <View style={[s.gridCell, { backgroundColor: c }]} />
         <View style={[s.gridCell, { backgroundColor: c }]} />
       </View>
+    </View>
+  );
+}
+
+/** Ícono de corazón (favoritos) */
+export function HeartIcon({ focused }: P) {
+  return (
+    <View style={s.heartWrap}>
+      <Text allowFontScaling={false} style={s.heart}>
+        {focused ? '❤️' : '🤍'}
+      </Text>
     </View>
   );
 }
@@ -80,6 +91,10 @@ const s = StyleSheet.create({
   grid: { width: 20, height: 20, gap: 3 },
   gridRow: { flexDirection: 'row', gap: 3, flex: 1 },
   gridCell: { flex: 1, borderRadius: 3 },
+
+  // Corazón
+  heartWrap: { width: 32, height: 28, alignItems: 'center', justifyContent: 'center', overflow: 'visible' },
+  heart: { fontSize: 22, lineHeight: 26, includeFontPadding: false, textAlign: 'center' },
 
   // Persona
   head: {
